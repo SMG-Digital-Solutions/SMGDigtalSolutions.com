@@ -1,5 +1,5 @@
 # SMGDigtalSolutions.com
-Official website for SMG Digital Solutions.
+Official Repo for SMG Digital Solutions website.
 
 **High-Performance Web Architecture for Service-Based Businesses.**
 
