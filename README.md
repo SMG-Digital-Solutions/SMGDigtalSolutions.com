@@ -32,5 +32,6 @@ We don't just build websites; we build **tools for growth**. By focusing on site
 ## 📬 Contact
 *   **Website:** [https://smgdigitalsolutions.com](https://smgdigitalsolutions.com)
 *   **Business Email:** hello@smgdigitalsolutions.com
+*   **Phone Number*:** 407-270-1023
 
 ---
