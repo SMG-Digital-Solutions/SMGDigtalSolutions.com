@@ -1,0 +1,28 @@
+---
+import '../styles/global.css';
+
+const {
+  title = 'SMG Digital Solutions | High-Converting Websites for Florida & USVI',
+  description = 'SMG Digital Solutions creates high-converting, high-performance websites for Florida and the U.S. Virgin Islands.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#00416A" />
+    <meta name="generator" content={Astro.generator} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <slot name="head" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen bg-[#F7F7F7] text-[#121212] antialiased transition-colors duration-200 dark:bg-[#121212] dark:text-[#F7F7F7]">
+    <slot />
+  </body>
+</html>
