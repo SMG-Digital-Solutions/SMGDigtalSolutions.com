@@ -1,4 +1,3 @@
-import { ArrowSquareOut } from '@phosphor-icons/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 
@@ -49,8 +48,7 @@ export default function DemoButton() {
             exit={{ opacity: 0, y: -4 }}
             className="inline-flex items-center gap-2"
           >
-            Get your custom demo
-            <ArrowSquareOut size={18} weight="bold" />
+            Request your demo today
           </motion.span>
         )}
       </AnimatePresence>
