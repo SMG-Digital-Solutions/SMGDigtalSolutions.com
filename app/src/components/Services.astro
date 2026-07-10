@@ -1,7 +1,7 @@
 ---
 const packages = [
   {
-    tier: '⚡️ AI Kickstart (1-Page)',
+    tier: 'Launchpad package',
     price: '$600',
     summary: 'A rapid launch landing page built to capture leads fast with premium speed and clarity.',
     features: [
@@ -11,7 +11,7 @@ const packages = [
     ]
   },
   {
-    tier: '🏠 Starter Package (3-5 Pages)',
+    tier: 'Core Suite package',
     price: '$1,200+',
     summary: 'A polished, responsive multi-page website with lead magnet integration and conversion-first structure.',
     features: [
@@ -19,27 +19,17 @@ const packages = [
       'Custom lead-magnet integration with email alerts',
       'Fully responsive 3-5 page website'
     ]
-  },
-  {
-    tier: '🚀 Growth Suite (Full-Stack)',
-    price: '$2,000+',
-    summary: 'A flagship digital solution with local search domination and custom app functionality for business growth.',
-    features: [
-      'Local search domination and GBP/Map optimization',
-      'Custom client portals and booking systems',
-      'AI chatbot and business automation features'
-    ]
   }
 ];
 
-const retainers = [
-  { name: 'Essential Maintenance', price: '$100/mo', desc: 'Reliable Cloud Hosting, Domain Management, SSL, and 24/7 Uptime Monitoring.' },
-  { name: 'Growth & Performance', price: '$200/mo', desc: 'Everything in Essential, plus Monthly SEO reporting, Google Business Profile management, and up to 2 hours of AI-driven feature enhancements.' }
-];
-
 const addons = [
-  { name: 'GBP Domination', price: '$300', desc: 'One-time setup, map optimization, review-gathering workflow, and local keyword tagging.' },
-  { name: 'AI-Enhanced Branding Package', price: '$250', desc: 'Logo tweaks, color system, and AI-generated brand copy.' }
+  { name: 'Essential Maintenance', price: '$100/mo', desc: 'Reliable Cloud Hosting, Domain Management, SSL, and 24/7 Uptime Monitoring.' },
+  { name: 'Growth & Performance', price: '$200/mo', desc: 'Everything in Essential, plus Monthly SEO reporting, Google Business Profile management, and up to 2 hours of AI-driven feature enhancements.' },
+  { name: 'GBP Optimization', price: '$300 - $500', desc: 'One-time setup, map optimization, review-gathering workflow, and local keyword tagging.' },
+  { name: 'Booking System integration', price: '$300 - $600', desc: 'Purpose-built booking system aligned to your services and customer journey.' },
+  { name: 'AI Branding Package', price: '$350 - $900', desc: 'Logo tweaks, color system, and AI-generated brand copy.' },
+  { name: 'AI Chatbot Integration', price: '$500 - $1,500+', desc: 'AI chatbot setup and business automation features tailored to your workflows.' },
+  { name: 'Client Portal integration', price: '$800 - $2,000+', desc: 'Secure, branded client portal implementation for streamlined communication and delivery.' }
 ];
 ---
 
@@ -49,71 +39,57 @@ const addons = [
     <h2 id="packages-heading" class="mt-2 text-3xl font-black">Pricing and Packages</h2>
   </div>
 
-  <div class="grid gap-6 md:grid-cols-[1fr_1.2fr_1fr]">
+  <div class="grid gap-6 md:grid-cols-2">
     {packages.map((pkg, index) => (
       <article
         class={
-          `glass-card rounded-[1.4rem] p-6 transition-all duration-300 ${
+          `h-full p-6 ${
             index === 1
-              ? 'bg-[#008C9E]/15 border-[#008C9E]/40 shadow-[0_30px_80px_rgba(0,140,158,0.22)] dark:bg-[#4CAF50]/15 dark:border-[#4CAF50]/40'
-              : 'bg-white/65 border-white/30 dark:bg-[#122435]/75 dark:border-white/10'
+              ? 'bg-[#008C9E]/15 dark:bg-[#4CAF50]/15'
+              : 'bg-white/65 dark:bg-[#122435]/75'
           }`
         }
         role="article"
         aria-label={pkg.tier}
       >
-        <div class="mb-4 flex items-baseline justify-between gap-3">
-          <div>
-            <p class="text-sm font-semibold uppercase tracking-[0.24em] text-[#008C9E] dark:text-[#A4F2C0]">{index === 1 ? 'Best Value' : 'Package'}</p>
-            <h3 class="mt-3 text-2xl font-black tracking-tight text-[#0f172a] dark:text-[#F7F7F7]">{pkg.tier}</h3>
+        <div class="mb-4">
+          <h3 class="text-2xl font-black tracking-tight whitespace-nowrap text-[#0f172a] dark:text-[#F7F7F7]">{pkg.tier}</h3>
+          <div class="mt-2 flex justify-end">
+            <span class="text-2xl font-black text-[#008C9E] dark:text-[#4CAF50] md:text-[2rem]">{pkg.price}</span>
           </div>
-          <span class="text-3xl font-black text-[#008C9E] dark:text-[#4CAF50]">{pkg.price}</span>
         </div>
         <p class="mb-6 max-w-xl text-sm leading-7 text-[#334155] dark:text-[#cbd5e1]">{pkg.summary}</p>
-        <div class="rounded-[1.25rem] border border-white/15 bg-white/10 p-4 text-sm text-[#334155] dark:border-white/10 dark:bg-[#0e1727]/80 dark:text-[#cbd5e1]">
-          <p class="font-medium">What’s included</p>
-          <ul class="mt-3 space-y-2 text-sm leading-6">
-            {pkg.features.map((feature) => (
-              <li class="flex items-start gap-2">
-                <span class="mt-1 inline-flex h-2.5 w-2.5 rounded-full bg-[#008C9E] dark:bg-[#4CAF50]" />
-                {feature}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <p class="font-medium text-sm text-[#334155] dark:text-[#cbd5e1]">What’s included</p>
+        <ul class="mt-3 space-y-2 text-sm leading-6 text-[#334155] dark:text-[#cbd5e1]">
+          {pkg.features.map((feature) => (
+            <li class="flex items-start gap-2">
+              <span class="mt-1 inline-flex h-2.5 w-2.5 rounded-full bg-[#008C9E] dark:bg-[#4CAF50]" />
+              {feature}
+            </li>
+          ))}
+        </ul>
       </article>
     ))}
   </div>
 
-  <div class="mt-8 grid gap-6 md:grid-cols-2">
-    <div class="glass-card rounded-[1.25rem] p-6">
-      <h3 class="text-lg font-semibold">Website Maintenance Add-Ons</h3>
-      <ul class="mt-4 space-y-4">
-        {retainers.map((r) => (
-          <li>
-            <div class="flex items-center justify-between">
-              <p class="font-semibold">{r.name}</p>
-              <p class="font-black text-[#008C9E] dark:text-[#4CAF50]">{r.price}</p>
-            </div>
-            <p class="mt-1 text-sm text-[#3f4b5a] dark:text-[#d5dde4]">{r.desc}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
+  <div class="mt-10">
+    <h3 class="text-center text-2xl font-black tracking-tight">Add-Ons</h3>
+    <p class="mx-auto mt-3 max-w-4xl text-center text-sm leading-6 text-[#3f4b5a] dark:text-[#d5dde4]">
+      Prices vary based on integration complexity and business-specific automation requirements. Custom quotes are provided after a brief discovery call to ensure the solution perfectly matches your operational needs.
+    </p>
 
-    <div class="glass-card rounded-[1.25rem] p-6">
-      <h3 class="text-lg font-semibold">A La Carte Add-Ons</h3>
-      <ul class="mt-4 space-y-4">
-        {addons.map((a) => (
-          <li>
-            <div class="flex items-center justify-between">
-              <p class="font-semibold">{a.name}</p>
+    <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {addons.map((a, index) => (
+        <article class={`addon-rotor rounded-[1.1rem] p-[1.5px] ${index === addons.length - 1 ? 'lg:col-start-2' : ''}`}>
+          <div class="glass-card h-full rounded-[calc(1.1rem-1px)] p-5">
+            <div class="flex items-center justify-between gap-3">
+              <p class="font-semibold text-[#121212] dark:text-[#F7F7F7]">{a.name}</p>
               <p class="font-black text-[#008C9E] dark:text-[#4CAF50]">{a.price}</p>
             </div>
-            <p class="mt-1 text-sm text-[#3f4b5a] dark:text-[#d5dde4]">{a.desc}</p>
-          </li>
-        ))}
-      </ul>
+            <p class="mt-2 text-sm leading-6 text-[#3f4b5a] dark:text-[#d5dde4]">{a.desc}</p>
+          </div>
+        </article>
+      ))}
     </div>
   </div>
 </section>
