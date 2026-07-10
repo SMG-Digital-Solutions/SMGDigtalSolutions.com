@@ -31,6 +31,8 @@ const addons = [
   { name: 'AI Chatbot Integration', price: '$500 - $1,500+', desc: 'AI chatbot setup and business automation features tailored to your workflows.' },
   { name: 'Client Portal integration', price: '$800 - $2,000+', desc: 'Secure, branded client portal implementation for streamlined communication and delivery.' }
 ];
+
+import ScrollRevealStagger from './ScrollRevealStagger.tsx';
 ---
 
 <section id="packages" class="shell py-8" aria-labelledby="packages-heading">
@@ -78,18 +80,20 @@ const addons = [
       Prices vary based on integration complexity and business-specific automation requirements. Custom quotes are provided after a brief discovery call to ensure the solution perfectly matches your operational needs.
     </p>
 
-    <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {addons.map((a, index) => (
-        <article class={`addon-rotor rounded-[1.1rem] p-[1.5px] ${index === addons.length - 1 ? 'lg:col-start-2' : ''}`}>
-          <div class="glass-card h-full rounded-[calc(1.1rem-1px)] p-5">
-            <div class="flex items-center justify-between gap-3">
-              <p class="font-semibold text-[#121212] dark:text-[#F7F7F7]">{a.name}</p>
-              <p class="font-black text-[#008C9E] dark:text-[#4CAF50]">{a.price}</p>
+    <ScrollRevealStagger client:visible staggerDelay={60} threshold={0.1}>
+      <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {addons.map((a, index) => (
+          <article class={`addon-rotor rounded-[1.1rem] p-[1.5px] ${index === addons.length - 1 ? 'lg:col-start-2' : ''}`}>
+            <div class="glass-card h-full rounded-[calc(1.1rem-1px)] p-5">
+              <div class="flex items-center justify-between gap-3">
+                <p class="font-semibold text-[#121212] dark:text-[#F7F7F7]">{a.name}</p>
+                <p class="font-black text-[#008C9E] dark:text-[#4CAF50]">{a.price}</p>
+              </div>
+              <p class="mt-2 text-sm leading-6 text-[#3f4b5a] dark:text-[#d5dde4]">{a.desc}</p>
             </div>
-            <p class="mt-2 text-sm leading-6 text-[#3f4b5a] dark:text-[#d5dde4]">{a.desc}</p>
-          </div>
-        </article>
-      ))}
-    </div>
+          </article>
+        ))}
+      </div>
+    </ScrollRevealStagger>
   </div>
 </section>
