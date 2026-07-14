@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 
 interface TypedHeadlineProps {
   staticText: string;
@@ -10,6 +11,24 @@ export default function TypedHeadline({ staticText, typedText, className = '' }:
   const typedCharacters = typedText.split('');
   const totalDuration = 3.5;
   const delayPerChar = totalDuration / typedCharacters.length;
+  const textRef = useRef<HTMLSpanElement>(null);
+  const [visibleChars, setVisibleChars] = useState(0);
+  const [cursorX, setCursorX] = useState(0);
+
+  useEffect(() => {
+    typedCharacters.forEach((_, i) => {
+      setTimeout(() => {
+        setVisibleChars(i + 1);
+      }, i * delayPerChar * 1000);
+    });
+  }, [typedCharacters.length, delayPerChar]);
+
+  useEffect(() => {
+    if (textRef.current) {
+      const width = textRef.current.offsetWidth;
+      setCursorX(width);
+    }
+  }, [visibleChars]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -32,12 +51,13 @@ export default function TypedHeadline({ staticText, typedText, className = '' }:
       <span>{staticText}</span>
       <div style={{ display: 'inline-flex', alignItems: 'center', position: 'relative' }}>
         <motion.span
+          ref={textRef}
           initial="hidden"
           animate="visible"
           variants={containerVariants}
           style={{ display: 'inline' }}
         >
-          {typedCharacters.map((char, i) => (
+          {typedCharacters.slice(0, visibleChars).map((char, i) => (
             <motion.span key={i} variants={charVariants} style={{ display: 'inline' }}>
               {char}
             </motion.span>
@@ -47,22 +67,13 @@ export default function TypedHeadline({ staticText, typedText, className = '' }:
           className="inline-block w-0.5 bg-[#008C9E] dark:bg-[#4CAF50]"
           style={{
             height: '1.5em',
-            marginLeft: '2px',
             verticalAlign: 'text-bottom',
           }}
-          initial={{ opacity: 1 }}
           animate={{
-            opacity: [
-              1, 1, 1, 1, 1, 1, 1,
-              0, 1, 0, 1, 0, 1, 0,
-            ]
+            opacity: visibleChars < typedCharacters.length ? 1 : [1, 0, 1, 0, 1, 0],
           }}
           transition={{
-            duration: totalDuration + 1.2,
-            times: [
-              0, 0.2, 0.4, 0.6, 0.8, 0.9, 0.98,
-              0.98, 1, 1, 1, 1, 1, 1,
-            ],
+            duration: visibleChars < typedCharacters.length ? 0.1 : 1.8,
             ease: 'linear',
           }}
         />
