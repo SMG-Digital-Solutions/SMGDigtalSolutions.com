@@ -83,8 +83,8 @@ import ScrollRevealStagger from './ScrollRevealStagger.tsx';
     <ScrollRevealStagger client:visible staggerDelay={60} threshold={0.1}>
       <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {addons.map((a, index) => (
-          <article class={`addon-rotor rounded-[1.1rem] p-[1.5px] ${index === addons.length - 1 ? 'lg:col-start-2' : ''}`}>
-            <div class="glass-card h-full rounded-[calc(1.1rem-1px)] p-5">
+          <article class={`addon-rotor rounded-[1.1rem] p-[1.5px] light:rounded-[1.2rem] light:border light:border-black/10 light:bg-[#F7F7F7] light:p-4 ${index === addons.length - 1 ? 'lg:col-start-2' : ''}`}>
+            <div class="glass-card h-full rounded-[calc(1.1rem-1px)] p-5 light:rounded-[calc(1.2rem-1px)] light:p-4 light:bg-transparent">
               <div class="flex items-center justify-between gap-3">
                 <p class="font-semibold text-[#121212] dark:text-[#F7F7F7]">{a.name}</p>
                 <p class="font-black text-[#008C9E] dark:text-[#4CAF50]">{a.price}</p>

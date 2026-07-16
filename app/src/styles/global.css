@@ -145,6 +145,25 @@ body {
     background: #12202d;
   }
 
+  /* Light mode overrides - only in non-dark mode */
+  html:not(.dark) .addon-rotor {
+    background: rgba(0, 140, 158, 0.15);
+    border-radius: 1.2rem;
+    padding: 1.5px;
+  }
+
+  html:not(.dark) .addon-rotor > .glass-card {
+    background: #F7F7F7;
+    border: none;
+    border-radius: calc(1.2rem - 1px);
+    backdrop-filter: none;
+  }
+
+  html:not(.dark) .addon-rotor .glass-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
   .addon-rotor .glass-card:hover {
     transform: none;
     box-shadow: none;
@@ -175,6 +194,25 @@ body {
     animation: addonBorderSpin 3.2s linear infinite;
     animation-play-state: paused;
     z-index: 1;
+  }
+
+  /* Light mode animation colors */
+  html:not(.dark) .addon-rotor::before {
+    background: conic-gradient(
+      from 0deg,
+      rgba(0, 140, 158, 0.24) 0deg,
+      #008C9E 36deg,
+      rgba(0, 140, 158, 0.24) 96deg,
+      rgba(0, 140, 158, 0.18) 180deg,
+      #008C9E 216deg,
+      rgba(0, 140, 158, 0.22) 276deg,
+      rgba(0, 140, 158, 0.24) 360deg
+    );
+  }
+
+  html:not(.dark) .addon-rotor:hover::before {
+    opacity: 1;
+    animation-play-state: running;
   }
 
   .addon-rotor:hover::before {
