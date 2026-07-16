@@ -43,7 +43,7 @@ const services = [
               <Image src={logo} alt="SMG Digital Solutions" width={180} height={48} class="h-full w-auto object-contain" />
             </div>
           </a>
-          <Navigation client:load />
+          <Navigation client:idle />
         </div>
       </nav>
     </header>
@@ -60,7 +60,7 @@ const services = [
             <div class="flex flex-col gap-8">
               <!-- badge removed per request -->
               <div class="space-y-6 lg:space-y-8">
-                <ScrollRevealImmediate client:load threshold={0.3}>
+                <ScrollRevealImmediate client:visible threshold={0.3}>
                   <h1 id="hero-heading" class="hero-stagger-0 text-3xl font-black leading-[1.08] tracking-tight text-[#121212] dark:text-white sm:text-4xl lg:text-[3.75rem] lg:leading-[1.1]">
                     <TypedHeadline
                       client:only="react"
@@ -70,15 +70,15 @@ const services = [
                     <span class="mt-5 block text-xl lg:mt-6 lg:text-2xl text-[#008C9E] dark:text-[#4CAF50]">Get a high-converting web asset built to capture leads 24/7.</span>
                   </h1>
                 </ScrollRevealImmediate>
-                <p class="hero-stagger-1 max-w-2xl text-base leading-7 text-[#3f4b5a] dark:text-white/70 drop-shadow-sm">
+                <p class="hero-stagger-1 max-w-2xl text-base leading-7 text-[#4b5563] dark:text-white/70 drop-shadow-sm">
                   SMG Digital Solutions creates speed-first websites that turn visitors into actionable leads for growing businesses.
                 </p>
               </div>
               <div class="hero-stagger-2 flex flex-wrap items-center gap-3">
                 <DemoButton client:load />
-                <a href="#results" class="cta-secondary inline-flex items-center gap-2 rounded-full border border-[#121212]/15 bg-[#121212]/5 px-5 py-3 text-sm font-semibold text-[#121212] transition hover:bg-[#121212]/10 dark:border-white/15 dark:bg-white/10 dark:text-white dark:hover:bg-white/20" aria-label="Explore the expected business outcomes">
+                <a href="#packages" class="cta-secondary inline-flex items-center gap-2 rounded-full border border-[#121212]/15 bg-[#121212]/5 px-5 py-3 text-sm font-semibold text-[#121212] transition hover:bg-[#121212]/10 dark:border-white/15 dark:bg-white/10 dark:text-white dark:hover:bg-white/20" aria-label="View our pricing and service packages">
                   See what we optimize
-                  <ArrowRight size={18} weight="bold" />
+                  <ArrowRight size={18} weight="bold" aria-hidden="true" />
                 </a>
               </div>
               <!-- Core growth outcome chips removed per user request -->
@@ -103,7 +103,7 @@ const services = [
             <div class="max-w-4xl space-y-4">
               <p class="text-sm font-semibold uppercase tracking-[0.25em] text-[#008C9E] dark:text-[#4CAF50]">Service focus</p>
               <h2 id="services-heading" class="text-xl font-black leading-[1.15] tracking-tight text-[#121212] dark:text-[#F7F7F7] md:text-[1.65rem] lg:text-[1.8rem]">AI-Powered Digital Solutions for Businesses at All Stages</h2>
-              <p class="max-w-3xl text-base leading-7 text-[#3f4b5a] dark:text-[#d5dde4]">Stop settling for slow, one-size-fits-all platforms. We combine AI-driven development with human strategy to build custom, high-performance websites that capture leads and scale your brand.</p>
+              <p class="max-w-3xl text-base leading-7 text-[#4b5563] dark:text-[#d5dde4]">Stop settling for slow, one-size-fits-all platforms. We combine AI-driven development with human strategy to build custom, high-performance websites that capture leads and scale your brand.</p>
             </div>
           </div>
             <ScrollRevealStagger client:visible staggerDelay={100} threshold={0.2}>
@@ -116,7 +116,7 @@ const services = [
                         <Icon size={20} weight="bold" />
                       </div>
                       <h3 class="text-lg font-semibold text-[#121212] dark:text-[#F7F7F7]">{service.title}</h3>
-                      <p class="mt-2 text-sm leading-7 text-[#3f4b5a] dark:text-[#d5dde4]">{service.description}</p>
+                      <p class="mt-2 text-sm leading-7 text-[#4b5563] dark:text-[#d5dde4]">{service.description}</p>
                     </article>
                   );
                 })}
@@ -132,9 +132,9 @@ const services = [
         <div class="rounded-[2rem] border border-black/10 bg-white/80 p-8 text-center shadow-sm backdrop-blur dark:border-white/10 dark:bg-[#1A2B3C]/70">
           <p class="text-sm font-semibold uppercase tracking-[0.25em] text-[#008C9E] dark:text-[#4CAF50]">Ready to launch</p>
           <h2 id="final-cta-heading" class="mt-3 text-3xl font-black tracking-tight text-[#121212] dark:text-[#F7F7F7]">Let’s turn your next customer visit into a booked conversation.</h2>
-          <p class="mx-auto mt-4 max-w-2xl text-lg leading-8 text-[#3f4b5a] dark:text-[#d5dde4]">Click the button below request a demo and start the conversation with a team that builds for speed, clarity, and revenue.</p>
+          <p class="mx-auto mt-4 max-w-2xl text-lg leading-8 text-[#4b5563] dark:text-[#d5dde4]">Click the button below request a demo and start the conversation with a team that builds for speed, clarity, and revenue.</p>
           <div class="mt-8 flex justify-center">
-            <DemoButton client:load />
+            <DemoButton client:idle />
           </div>
         </div>
       </section>
@@ -145,7 +145,7 @@ const services = [
             <div>
               <p class="text-sm font-semibold uppercase tracking-[0.25em] text-[#008C9E] dark:text-[#4CAF50]">Contact us</p>
               <h2 id="contact-heading" class="mt-3 text-3xl font-black tracking-tight text-[#121212] dark:text-[#F7F7F7]">Need a custom quote? Let’s talk.</h2>
-              <p class="mt-4 max-w-2xl text-base leading-7 text-[#3f4b5a] dark:text-[#d5dde4]">Fill out the form and we’ll follow up with a fast, transparent quote that fits your local business goals.</p>
+              <p class="mt-4 max-w-2xl text-base leading-7 text-[#4b5563] dark:text-[#d5dde4]">Fill out the form and we’ll follow up with a fast, transparent quote that fits your local business goals.</p>
             </div>
             <form class="min-h-96 lg:min-h-[28rem] space-y-4 rounded-[1.5rem] border border-black/10 bg-[#F7F7F7]/90 p-6 dark:border-white/10 dark:bg-[#0F1B2C]/80" action="https://formsubmit.co/your-email@example.com" method="POST">
               <input type="hidden" name="_subject" value="New contact form submission" />

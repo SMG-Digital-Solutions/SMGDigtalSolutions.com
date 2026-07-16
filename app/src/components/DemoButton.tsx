@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 
-const demoUrl = 'https://tally.so/r/n0kQ9N';
+const demoUrl = 'https://tally.so/r/rjk8vp';
 
 export default function DemoButton() {
   const [isLoading, setIsLoading] = useState(false);

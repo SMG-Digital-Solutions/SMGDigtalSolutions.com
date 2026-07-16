@@ -20,7 +20,10 @@
   /* Staggered animation - parent container applies delays to children */
   .animate-stagger > * {
     animation: fadeSlideUp 0.6s ease-out forwards;
-    opacity: 0; /* Start invisible for stagger effect */
+    opacity: 0;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform: translateZ(0);
   }
 
   .animate-stagger > *:nth-child(1) {
@@ -77,6 +80,9 @@
 .animate-stagger-custom > * {
   animation: fadeSlideUp 0.6s ease-out forwards;
   opacity: 0;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 /* GPU acceleration hints */

@@ -22,18 +22,18 @@ export default function HeroFloatingCard() {
           <h3 className="text-sm font-bold text-[#121212] dark:text-white">
             AI-Powered Architecture
           </h3>
-          <p className="mt-1 text-xs leading-5 text-[#3f4b5a] dark:text-white/70">
+          <p className="mt-1 text-xs leading-5 text-[#4b5563] dark:text-white/70">
             Intelligent design patterns that adapt to your visitors' behavior.
           </p>
 
           <div className="mt-4 flex gap-3">
             <div className="flex-1">
               <div className="text-lg font-black text-[#4CAF50]">2.3x</div>
-              <div className="text-xs text-[#3f4b5a] dark:text-white/60">Lead conversion</div>
+              <div className="text-xs text-[#4b5563] dark:text-white/60">Lead conversion</div>
             </div>
             <div className="flex-1">
               <div className="text-lg font-black text-[#008C9E]">94+</div>
-              <div className="text-xs text-[#3f4b5a] dark:text-white/60">Performance</div>
+              <div className="text-xs text-[#4b5563] dark:text-white/60">Performance</div>
             </div>
           </div>
         </div>

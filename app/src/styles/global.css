@@ -31,6 +31,7 @@ html.dark {
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 80px;
 }
 
 body {
@@ -98,25 +99,40 @@ body {
   .hero-stagger-0 {
     animation: fadeInUp 0.8s ease-out forwards;
     animation-delay: 0ms;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform: translateZ(0);
   }
 
   .hero-stagger-1 {
     animation: fadeInUp 0.8s ease-out forwards;
     animation-delay: 200ms;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform: translateZ(0);
   }
 
   .hero-stagger-2 {
     animation: fadeInUp 0.8s ease-out forwards;
     animation-delay: 400ms;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform: translateZ(0);
   }
 
   .hero-stagger-3 {
     animation: fadeInUp 0.5s ease-out forwards;
     animation-delay: 600ms;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform: translateZ(0);
   }
 
   .glass-animate {
     animation: floatY 6s ease-in-out infinite;
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: translateZ(0);
   }
 
   .muted-panel {

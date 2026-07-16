@@ -14,9 +14,9 @@ const links = [
     ariaLabel: 'Explore service offerings',
   },
   {
-    href: '#results',
-    label: 'Results',
-    ariaLabel: 'View business outcomes',
+    href: '#packages',
+    label: 'Pricing',
+    ariaLabel: 'View pricing and packages',
   },
   {
     href: '#contact',

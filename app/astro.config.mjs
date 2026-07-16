@@ -11,5 +11,29 @@ export default defineConfig({
       compression({ algorithm: 'gzip' }),
       compression({ algorithm: 'brotliCompress' }),
     ],
+    build: {
+      minify: 'terser',
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'framer-motion': ['framer-motion'],
+            'react-vendor': ['react', 'react-dom'],
+          },
+        },
+      },
+      terserOptions: {
+        compress: {
+          drop_console: false,
+        },
+      },
+    },
+    ssr: {
+      noExternal: ['framer-motion'],
+    },
   },
+  build: {
+    format: 'directory',
+    inlineStylesheets: 'auto',
+  },
+  output: 'static',
 });
