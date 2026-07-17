@@ -20,7 +20,21 @@ const {
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <link rel="icon" type="image/svg+xml" href={logo.src} />
+    <link rel="preconnect" href="https://rsms.me" crossorigin />
+    <link rel="preconnect" href="https://tally.so" />
+    <link rel="preconnect" href="https://formsubmit.co" />
+    <link rel="dns-prefetch" href="https://instagram.com" />
+    <link rel="dns-prefetch" href="https://linkedin.com" />
+    <link rel="dns-prefetch" href="https://facebook.com" />
     <link rel="preload" as="font" href="https://rsms.me/inter/inter.css" crossorigin />
+    <style>
+      @supports (font-display: swap) {
+        @font-face {
+          font-family: Inter;
+          font-display: swap;
+        }
+      }
+    </style>
     <slot name="head" />
     <title>{title}</title>
   </head>

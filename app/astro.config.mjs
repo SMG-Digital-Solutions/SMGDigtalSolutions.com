@@ -2,10 +2,11 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
+import critters from '@critters-rs/astro';
 import { compression } from 'vite-plugin-compression2';
 
 export default defineConfig({
-  integrations: [react(), tailwind({ applyBaseStyles: false })],
+  integrations: [react(), tailwind({ applyBaseStyles: false }), critters()],
   vite: {
     plugins: [
       compression({ algorithm: 'gzip' }),
