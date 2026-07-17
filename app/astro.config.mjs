@@ -12,18 +12,13 @@ export default defineConfig({
       compression({ algorithm: 'brotliCompress' }),
     ],
     build: {
-      minify: 'terser',
+      minify: 'esbuild',
       rollupOptions: {
         output: {
           manualChunks: {
             'framer-motion': ['framer-motion'],
             'react-vendor': ['react', 'react-dom'],
           },
-        },
-      },
-      terserOptions: {
-        compress: {
-          drop_console: false,
         },
       },
     },
