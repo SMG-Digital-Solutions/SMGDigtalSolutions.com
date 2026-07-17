@@ -1,12 +1,9 @@
 [build]
-  command = "cd app && npm run build"
-  publish = "app/dist"
+  base = "app"
+  publish = "dist"
+  command = "npm run build"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
-  status = 404
-
-[context.production]
-  command = "cd app && npm run build"
-  publish = "app/dist"
+  status = 200
