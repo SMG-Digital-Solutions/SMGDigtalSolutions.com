@@ -49,6 +49,15 @@ const services = [
     </header>
 
     <main>
+      {Astro.url.searchParams.has('success') && (
+        <div class="bg-[#4CAF50] text-white py-4 px-6 text-center">
+          <p class="text-lg font-semibold mb-2">Thank you for your message!</p>
+          <p class="mb-4">We've received your inquiry and will get back to you soon.</p>
+          <a href="/" class="inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-sm font-semibold transition hover:bg-white/30">
+            ← Back to Website
+          </a>
+        </div>
+      )}
       <section class="relative overflow-hidden" aria-labelledby="hero-heading">
         <div aria-hidden="true" class="hero-blob hero-blob-a"></div>
         <div aria-hidden="true" class="hero-blob hero-blob-b"></div>
@@ -143,6 +152,8 @@ const services = [
             </div>
             <form class="min-h-96 lg:min-h-[28rem] space-y-4 rounded-[1.5rem] border border-black/10 bg-[#F7F7F7]/90 p-6 dark:border-white/10 dark:bg-[#0F1B2C]/80" action="https://formsubmit.co/smgdigitalsolutions@outlook.com" method="POST">
               <input type="hidden" name="_subject" value="New contact form submission" />
+              <input type="hidden" name="_captcha" value="false" />
+              <input type="hidden" name="_next" value="https://smgdigitalsolutions.com/?success=true" />
               <div class="grid gap-4 sm:grid-cols-2">
                 <label class="block text-sm font-semibold text-[#121212] dark:text-[#F7F7F7]">
                   Name
