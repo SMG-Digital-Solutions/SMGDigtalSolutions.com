@@ -4,6 +4,7 @@ import { ArrowRight, RocketLaunch, ShieldCheck, Sparkle, InstagramLogo, Linkedin
 import DemoButton from '../components/DemoButton';
 import HeroFloatingCard from '../components/HeroFloatingCard';
 import TypedHeadline from '../components/TypedHeadline';
+import ContactForm from '../components/ContactForm';
 import Layout from '../layouts/Layout.astro';
 import Navigation from '../components/Navigation';
 import Services from '../components/Services.astro';
@@ -49,15 +50,6 @@ const services = [
     </header>
 
     <main>
-      {Astro.url.searchParams.has('success') && (
-        <div class="bg-[#4CAF50] text-white py-4 px-6 text-center">
-          <p class="text-lg font-semibold mb-2">Thank you for your message!</p>
-          <p class="mb-4">We've received your inquiry and will get back to you soon.</p>
-          <a href="/" class="inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-sm font-semibold transition hover:bg-white/30">
-            ← Back to Website
-          </a>
-        </div>
-      )}
       <section class="relative overflow-hidden" aria-labelledby="hero-heading">
         <div aria-hidden="true" class="hero-blob hero-blob-a"></div>
         <div aria-hidden="true" class="hero-blob hero-blob-b"></div>
@@ -150,26 +142,7 @@ const services = [
               <h2 id="contact-heading" class="mt-3 text-3xl font-black tracking-tight text-[#121212] dark:text-[#F7F7F7]">Need a custom quote? Let’s talk.</h2>
               <p class="mt-4 max-w-2xl text-base leading-7 text-[#4b5563] dark:text-[#d5dde4]">Fill out the form and we’ll follow up with a fast, transparent quote that fits your local business goals.</p>
             </div>
-            <form class="min-h-96 lg:min-h-[28rem] space-y-4 rounded-[1.5rem] border border-black/10 bg-[#F7F7F7]/90 p-6 dark:border-white/10 dark:bg-[#0F1B2C]/80" action="https://formsubmit.co/smgdigitalsolutions@outlook.com" method="POST">
-              <input type="hidden" name="_subject" value="New contact form submission" />
-              <input type="hidden" name="_captcha" value="false" />
-              <input type="hidden" name="_next" value="https://smgdigitalsolutions.com/?success=true" />
-              <div class="grid gap-4 sm:grid-cols-2">
-                <label class="block text-sm font-semibold text-[#121212] dark:text-[#F7F7F7]">
-                  Name
-                  <input type="text" name="name" required class="mt-2 w-full rounded-3xl border border-black/10 bg-white px-4 py-3 text-sm text-[#121212] outline-none transition focus:border-[#008C9E] focus:ring-2 focus:ring-[#008C9E]/20 dark:border-white/10 dark:bg-[#122238] dark:text-[#F7F7F7]" />
-                </label>
-                <label class="block text-sm font-semibold text-[#121212] dark:text-[#F7F7F7]">
-                  Email
-                  <input type="email" name="email" required class="mt-2 w-full rounded-3xl border border-black/10 bg-white px-4 py-3 text-sm text-[#121212] outline-none transition focus:border-[#008C9E] focus:ring-2 focus:ring-[#008C9E]/20 dark:border-white/10 dark:bg-[#122238] dark:text-[#F7F7F7]" />
-                </label>
-              </div>
-              <label class="block text-sm font-semibold text-[#121212] dark:text-[#F7F7F7]">
-                Message
-                <textarea name="message" rows="5" required class="mt-2 w-full rounded-[1.5rem] border border-black/10 bg-white px-4 py-3 text-sm text-[#121212] outline-none transition focus:border-[#008C9E] focus:ring-2 focus:ring-[#008C9E]/20 dark:border-white/10 dark:bg-[#122238] dark:text-[#F7F7F7]"></textarea>
-              </label>
-              <button type="submit" class="inline-flex w-full justify-center rounded-full bg-[#008C9E] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#006a73] dark:bg-[#4CAF50] dark:hover:bg-[#379d55]">Send message</button>
-            </form>
+            <ContactForm client:visible />
           </div>
         </div>
       </section>
