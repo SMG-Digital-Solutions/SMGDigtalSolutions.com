@@ -1,0 +1,102 @@
+---
+import { ArrowSquareOut, Wrench } from '@phosphor-icons/react';
+import ScrollRevealStagger from './ScrollRevealStagger';
+
+const projects = [
+  {
+    title: 'Handyman Service Demo Website',
+    type: 'Website Case Study',
+    image: '/images/projects/handyman-demo-hero.png',
+    imageAlt: 'Hero section screenshot of the Handyman Service demo website',
+    summary:
+      'A conversion-first website concept for a local handyman brand, designed to build trust quickly and drive quote requests with clear service messaging.',
+    highlights: ['High-contrast service-focused hero', 'Trust signals above the fold', 'Mobile-first CTA structure'],
+    stack: [
+      'Next.js 16',
+      'React 19',
+      'TypeScript',
+      'Tailwind CSS 4',
+      'Framer Motion',
+      'Vitest + Testing Library',
+      'ESLint (Next.js)',
+      '@phosphor-icons/react',
+      'jsdom',
+      'PostCSS'
+    ],
+    liveUrl: 'https://smghandymandemo.netlify.app/'
+  }
+];
+---
+
+<section id="projects" class="shell py-8" aria-labelledby="projects-heading">
+  <div class="rounded-[2rem] border border-black/10 bg-white/80 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-[#1A2B3C]/70">
+    <div class="mb-8 max-w-4xl space-y-4">
+      <p class="text-sm font-semibold uppercase tracking-[0.25em] text-[#008C9E] dark:text-[#4CAF50]">Project gallery</p>
+      <h2 id="projects-heading" class="text-xl font-black leading-[1.15] tracking-tight text-[#121212] dark:text-[#F7F7F7] md:text-[1.65rem] lg:text-[1.8rem]">Recent Case Studies and Web Builds</h2>
+      <p class="max-w-3xl text-base leading-7 text-[#4b5563] dark:text-[#d5dde4]">Explore examples of strategic websites built to improve brand credibility, conversion clarity, and customer action.</p>
+    </div>
+
+    <ScrollRevealStagger client:visible staggerDelay={100} threshold={0.15}>
+      <div class="grid gap-5">
+        {projects.map((project) => (
+          <article class="overflow-hidden rounded-[1.5rem] border border-black/10 bg-[#f9fbfc] shadow-sm dark:border-white/10 dark:bg-[#112638]">
+            <div class="grid gap-0 lg:grid-cols-[1.1fr_1fr]">
+              <div class="relative min-h-[220px] bg-[#0f2233]">
+                <img
+                  src={project.image}
+                  alt={project.imageAlt}
+                  loading="lazy"
+                  class="h-full w-full object-cover"
+                />
+                <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-[#0b1b2a]/70 via-transparent to-transparent"></div>
+              </div>
+
+              <div class="flex flex-col gap-5 p-6">
+                <div class="space-y-2">
+                  <p class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#008C9E] dark:text-[#4CAF50]">
+                    <Wrench size={14} weight="bold" aria-hidden="true" />
+                    {project.type}
+                  </p>
+                  <h3 class="text-2xl font-black tracking-tight text-[#121212] dark:text-[#F7F7F7]">{project.title}</h3>
+                  <p class="text-sm leading-7 text-[#4b5563] dark:text-[#d5dde4]">{project.summary}</p>
+                </div>
+
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#0f3347]/70 dark:text-white/60">Highlights</p>
+                  <ul class="mt-3 grid gap-2 text-sm text-[#334155] dark:text-[#d5dde4]">
+                    {project.highlights.map((highlight) => (
+                      <li class="flex items-start gap-2">
+                        <span class="mt-2 inline-flex h-2 w-2 rounded-full bg-[#008C9E] dark:bg-[#4CAF50]"></span>
+                        <span>{highlight}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div class="flex flex-wrap gap-2">
+                  {project.stack.map((tool) => (
+                    <span class="inline-flex items-center rounded-full border border-[#008C9E]/25 bg-[#008C9E]/10 px-3 py-1 text-xs font-semibold text-[#0f3347] dark:border-[#4CAF50]/30 dark:bg-[#4CAF50]/15 dark:text-[#d8f3dc]">
+                      {tool}
+                    </span>
+                  ))}
+                </div>
+
+                <div>
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-2 rounded-full bg-[#008C9E] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#00798A] dark:bg-[#4CAF50] dark:text-[#0b2410] dark:hover:bg-[#43a648]"
+                  >
+                    View Live Demo
+                    <ArrowSquareOut size={17} weight="bold" aria-hidden="true" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </ScrollRevealStagger>
+  </div>
+</section>

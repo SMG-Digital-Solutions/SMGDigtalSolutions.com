@@ -14,6 +14,11 @@ const links = [
     ariaLabel: 'Explore service offerings',
   },
   {
+    href: '#projects',
+    label: 'Projects',
+    ariaLabel: 'Explore project and case study gallery',
+  },
+  {
     href: '#packages',
     label: 'Pricing',
     ariaLabel: 'View pricing and packages',
