@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx --yes playwright@latest --version)",
+      "Bash(mkdir -p shots)",
+      "Bash(npm init *)",
+      "Bash(npm install *)"
+    ]
+  }
+}

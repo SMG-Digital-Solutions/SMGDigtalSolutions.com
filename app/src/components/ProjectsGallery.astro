@@ -1,6 +1,6 @@
 ---
-import { ArrowSquareOut, Wrench } from '@phosphor-icons/react';
 import ScrollRevealStagger from './ScrollRevealStagger';
+import ProjectsCarousel from './ProjectsCarousel';
 
 const projects = [
   {
@@ -24,6 +24,39 @@ const projects = [
       'PostCSS'
     ],
     liveUrl: 'https://smghandymandemo.netlify.app/'
+  },
+  {
+    title: "Dawn's Beauty Studio Demo Website",
+    type: 'Website Case Study',
+    image: '/images/projects/dawns-beauty-hero.png',
+    imageAlt: "Hero section screenshot of the Dawn's Beauty hair, skin, and nail studio demo website",
+    summary:
+      'An editorial, image-forward concept for a New York hair, skin, and nail studio, built to feel upscale while keeping booking front and center.',
+    highlights: ['Elegant serif hero typography', 'Full-bleed lifestyle photography', 'Prominent booking CTA above the fold'],
+    stack: ['React', 'Vite', 'Tailwind CSS 4'],
+    liveUrl: 'https://chic-starlight-a2551f.netlify.app/'
+  },
+  {
+    title: 'Drywall & Texturing Contractor Demo Website',
+    type: 'Website Case Study',
+    image: '/images/projects/drywall-demo-hero.png',
+    imageAlt: 'Hero section screenshot of the DNA Texturing & Drywall of Orlando demo website',
+    summary:
+      'A conversion-focused site for a Central Florida drywall and texturing company, pairing bold headline messaging with trust signals and reviews to drive free-estimate requests.',
+    highlights: ['Bold high-contrast hero headline', 'Google rating and review count above the fold', 'Dual "Free Estimate" and "Call Now" CTAs'],
+    stack: ['Next.js', 'React', 'Tailwind CSS 4'],
+    liveUrl: 'https://drywall-demo.netlify.app/'
+  },
+  {
+    title: 'Painting Contractor Demo Website',
+    type: 'Website Case Study',
+    image: '/images/projects/painting-demo-hero.png',
+    imageAlt: 'Hero section screenshot of the Mike Jones Painting LLC demo website',
+    summary:
+      'A trust-building site for a veteran painting and drywall contractor in South Carolina, using licensing badges and a 5-star rating to reinforce credibility and drive quote requests.',
+    highlights: ['Full-bleed project photography hero', 'Licensed & insured and 5-star rating badges', 'Layered "Get a Free Quote" and click-to-call CTAs'],
+    stack: ['Next.js', 'React', 'Tailwind CSS 4'],
+    liveUrl: 'https://painting-demo-site.netlify.app/'
   }
 ];
 ---
@@ -37,66 +70,7 @@ const projects = [
     </div>
 
     <ScrollRevealStagger client:visible staggerDelay={100} threshold={0.15}>
-      <div class="grid gap-5">
-        {projects.map((project) => (
-          <article class="overflow-hidden rounded-[1.5rem] border border-black/10 bg-[#f9fbfc] shadow-sm dark:border-white/10 dark:bg-[#112638]">
-            <div class="grid gap-0 lg:grid-cols-[1.1fr_1fr]">
-              <div class="relative min-h-[220px] bg-[#0f2233]">
-                <img
-                  src={project.image}
-                  alt={project.imageAlt}
-                  loading="lazy"
-                  class="h-full w-full object-cover"
-                />
-                <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-[#0b1b2a]/70 via-transparent to-transparent"></div>
-              </div>
-
-              <div class="flex flex-col gap-5 p-6">
-                <div class="space-y-2">
-                  <p class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#008C9E] dark:text-[#4CAF50]">
-                    <Wrench size={14} weight="bold" aria-hidden="true" />
-                    {project.type}
-                  </p>
-                  <h3 class="text-2xl font-black tracking-tight text-[#121212] dark:text-[#F7F7F7]">{project.title}</h3>
-                  <p class="text-sm leading-7 text-[#4b5563] dark:text-[#d5dde4]">{project.summary}</p>
-                </div>
-
-                <div>
-                  <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#0f3347]/70 dark:text-white/60">Highlights</p>
-                  <ul class="mt-3 grid gap-2 text-sm text-[#334155] dark:text-[#d5dde4]">
-                    {project.highlights.map((highlight) => (
-                      <li class="flex items-start gap-2">
-                        <span class="mt-2 inline-flex h-2 w-2 rounded-full bg-[#008C9E] dark:bg-[#4CAF50]"></span>
-                        <span>{highlight}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div class="flex flex-wrap gap-2">
-                  {project.stack.map((tool) => (
-                    <span class="inline-flex items-center rounded-full border border-[#008C9E]/25 bg-[#008C9E]/10 px-3 py-1 text-xs font-semibold text-[#0f3347] dark:border-[#4CAF50]/30 dark:bg-[#4CAF50]/15 dark:text-[#d8f3dc]">
-                      {tool}
-                    </span>
-                  ))}
-                </div>
-
-                <div>
-                  <a
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 rounded-full bg-[#008C9E] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#00798A] dark:bg-[#4CAF50] dark:text-[#0b2410] dark:hover:bg-[#43a648]"
-                  >
-                    View Live Demo
-                    <ArrowSquareOut size={17} weight="bold" aria-hidden="true" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </article>
-        ))}
-      </div>
+      <ProjectsCarousel client:visible projects={projects} intervalMs={6000} />
     </ScrollRevealStagger>
   </div>
 </section>
