@@ -1,97 +1,29 @@
 ---
-const packages = [
-  {
-    tier: 'Launchpad package',
-    price: '$600',
-    summary: 'A rapid launch landing page built to capture leads fast with premium speed and clarity.',
-    features: [
-      '1-page landing page layout',
-      'Optimized for speed',
-      'High-conversion layout designed for immediate lead capture'
-    ]
-  },
-  {
-    tier: 'Core Suite package',
-    price: '$1,200+',
-    summary: 'A polished, responsive multi-page website with lead magnet integration and conversion-first structure.',
-    features: [
-      'Professional frontend polish',
-      'Custom lead-magnet integration with email alerts',
-      'Fully responsive 3-5 page website'
-    ]
-  }
-];
-
-const addons = [
-  { name: 'Essential Maintenance', price: '$100/mo', desc: 'Reliable Cloud Hosting, Domain Management, SSL, and 24/7 Uptime Monitoring.' },
-  { name: 'Growth & Performance', price: '$200/mo', desc: 'Everything in Essential, plus Monthly SEO reporting, Google Business Profile management, and up to 2 hours of AI-driven feature enhancements.' },
-  { name: 'GBP Optimization', price: '$300 - $500', desc: 'One-time setup, map optimization, review-gathering workflow, and local keyword tagging.' },
-  { name: 'AI Branding Package', price: '$350 - $900', desc: 'Logo tweaks, color system, and AI-generated brand copy.' },
-  { name: 'AI Chatbot Integration', price: '$500 - $1,500+', desc: 'AI chatbot setup and business automation features tailored to your workflows.' }
-];
-
-import ScrollRevealStagger from './ScrollRevealStagger.tsx';
+import PricingPlans from './PricingPlans.tsx';
+import InteractiveQuoteCalculator from './InteractiveQuoteCalculator.tsx';
+import AddOnsSection from './AddOnsSection.tsx';
 ---
 
 <section id="packages" class="shell py-8" aria-labelledby="packages-heading">
+  <div class="mb-10 rounded-[2rem] bg-[#00416A] p-8 text-center shadow-sm dark:bg-[#072938] sm:p-10">
+    <p class="mx-auto max-w-3xl text-lg font-semibold leading-8 text-white sm:text-xl">
+      Traditional agencies charge $5,000 to $60,000 for a custom web build. We don&rsquo;t. Get an
+      enterprise-grade, high-converting website engineered for speed&mdash;without the bloated agency price tag.
+    </p>
+  </div>
+
   <div class="mb-6">
     <p class="text-sm font-semibold uppercase tracking-[0.25em] text-[#008C9E] dark:text-[#4CAF50]">Service Tier & Pricing</p>
     <h2 id="packages-heading" class="mt-2 text-3xl font-black">Pricing and Packages</h2>
   </div>
 
-  <div class="grid gap-6 md:grid-cols-2">
-    {packages.map((pkg, index) => (
-      <article
-        class={
-          `h-full p-6 ${
-            index === 1
-              ? 'bg-[#008C9E]/15 dark:bg-[#4CAF50]/15'
-              : 'bg-white/65 dark:bg-[#122435]/75'
-          }`
-        }
-        role="article"
-        aria-label={pkg.tier}
-      >
-        <div class="mb-4">
-          <h3 class="text-2xl font-black tracking-tight whitespace-nowrap text-[#0f172a] dark:text-[#F7F7F7]">{pkg.tier}</h3>
-          <div class="mt-2 flex justify-end">
-            <span class="text-2xl font-black text-[#008C9E] dark:text-[#4CAF50] md:text-[2rem]">{pkg.price}</span>
-          </div>
-        </div>
-        <p class="mb-6 max-w-xl text-sm leading-7 text-[#334155] dark:text-[#cbd5e1]">{pkg.summary}</p>
-        <p class="font-medium text-sm text-[#334155] dark:text-[#cbd5e1]">What’s included</p>
-        <ul class="mt-3 space-y-2 text-sm leading-6 text-[#334155] dark:text-[#cbd5e1]">
-          {pkg.features.map((feature) => (
-            <li class="flex items-start gap-2">
-              <span class="mt-1 inline-flex h-2.5 w-2.5 rounded-full bg-[#008C9E] dark:bg-[#4CAF50]" />
-              {feature}
-            </li>
-          ))}
-        </ul>
-      </article>
-    ))}
+  <PricingPlans client:visible />
+
+  <div class="mt-14">
+    <AddOnsSection client:visible />
   </div>
 
-  <div class="mt-10">
-    <h2 class="text-center text-2xl font-black tracking-tight">Add-Ons</h2>
-    <p class="mx-auto mt-3 max-w-4xl text-center text-sm leading-6 text-[#4b5563] dark:text-[#d5dde4]">
-      Prices vary based on integration complexity and business-specific automation requirements. Custom quotes are provided after a brief discovery call to ensure the solution perfectly matches your operational needs.
-    </p>
-
-    <ScrollRevealStagger client:visible staggerDelay={60} threshold={0.1}>
-      <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {addons.map((a, index) => (
-          <article class={`addon-rotor rounded-[1.1rem] p-[1.5px] light:rounded-[1.2rem] light:border light:border-black/10 light:bg-[#F7F7F7] light:p-4 ${index === addons.length - 1 ? 'lg:col-start-2' : ''}`}>
-            <div class="glass-card h-full rounded-[calc(1.1rem-1px)] p-5 light:rounded-[calc(1.2rem-1px)] light:p-4 light:bg-transparent">
-              <div class="flex items-center justify-between gap-3">
-                <p class="font-semibold text-[#121212] dark:text-[#F7F7F7]">{a.name}</p>
-                <p class="font-black text-[#008C9E] dark:text-[#4CAF50]">{a.price}</p>
-              </div>
-              <p class="mt-2 text-sm leading-6 text-[#4b5563] dark:text-[#d5dde4]">{a.desc}</p>
-            </div>
-          </article>
-        ))}
-      </div>
-    </ScrollRevealStagger>
+  <div class="mt-14">
+    <InteractiveQuoteCalculator client:visible />
   </div>
 </section>

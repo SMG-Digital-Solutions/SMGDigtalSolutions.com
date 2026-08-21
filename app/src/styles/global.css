@@ -242,6 +242,70 @@ body {
     background: #10263a;
   }
 
+  /*
+   * The rotating ring is a decorative sibling layer, not an ancestor of the
+   * card content. Its ::before rotates its own full rectangular box (not just
+   * a thin ring), which sweeps outside its bounds mid-rotation, so it needs
+   * its own `overflow: hidden` to clip that. Keeping it out of the card
+   * content's ancestor chain means that clip never touches the card's
+   * box-shadow, which needs to be free to extend past the card on hover.
+   */
+  .addon-ring {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .addon-ring::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: conic-gradient(
+      from 0deg,
+      rgba(0, 140, 158, 0.24) 0deg,
+      #008C9E 36deg,
+      rgba(0, 140, 158, 0.24) 96deg,
+      rgba(0, 140, 158, 0.18) 180deg,
+      #008C9E 216deg,
+      rgba(0, 140, 158, 0.22) 276deg,
+      rgba(0, 140, 158, 0.24) 360deg
+    );
+    opacity: 0;
+    will-change: transform, opacity;
+    transform-origin: 50% 50%;
+    backface-visibility: hidden;
+    animation: addonBorderSpin 3.2s linear infinite;
+    animation-play-state: paused;
+    transition: opacity 200ms ease;
+  }
+
+  html.dark .addon-ring::before {
+    background: conic-gradient(
+      from 0deg,
+      rgba(77, 175, 81, 0.24) 0deg,
+      #4daf51 36deg,
+      rgba(77, 175, 81, 0.24) 96deg,
+      rgba(77, 175, 81, 0.18) 180deg,
+      #4daf51 216deg,
+      rgba(77, 175, 81, 0.22) 276deg,
+      rgba(77, 175, 81, 0.24) 360deg
+    );
+  }
+
+  .addon-card:hover .addon-ring::before {
+    opacity: 1;
+    animation-play-state: running;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .addon-ring::before {
+      animation: none;
+    }
+  }
+
   @keyframes meshDriftA {
     0% {
       transform: translate3d(-12%, -10%, 0) scale(0.96);
