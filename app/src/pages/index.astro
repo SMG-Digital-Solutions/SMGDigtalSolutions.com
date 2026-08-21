@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { ArrowRight, RocketLaunch, ShieldCheck, Sparkle, PaintBrush, DeviceMobile, ChartLineUp, Robot, InstagramLogo, LinkedinLogo, FacebookLogo } from '@phosphor-icons/react';
+import { ArrowRight, InstagramLogo, LinkedinLogo, FacebookLogo } from '@phosphor-icons/react';
 import DemoButton from '../components/DemoButton';
 import HeroFloatingCard from '../components/HeroFloatingCard';
 import TypedHeadline from '../components/TypedHeadline';
@@ -9,58 +9,10 @@ import BookingDrawer from '../components/BookingDrawer';
 import Layout from '../layouts/Layout.astro';
 import Navigation from '../components/Navigation';
 import Services from '../components/Services.astro';
+import ServiceFocus from '../components/ServiceFocus';
 import ProjectsGallery from '../components/ProjectsGallery.astro';
 import ScrollRevealImmediate from '../components/ScrollRevealImmediate';
-import ScrollRevealStagger from '../components/ScrollRevealStagger';
 import logo from '../assets/Logo-Removed-Background.svg';
-
-const serviceCategories = [
-  {
-    label: 'Design & Performance Engine',
-    services: [
-      {
-        title: 'Modern Web Design',
-        description: 'Custom visual layouts engineered around your specific brand identity, built with a user-centric approach that ensures high visual appeal and conversions.',
-        icon: PaintBrush,
-      },
-      {
-        title: 'Mobile-First Performance',
-        description: 'Flawless user experience across smartphones, tablets, and desktops so you reach customers wherever they are on any screen.',
-        icon: DeviceMobile,
-      },
-      {
-        title: 'Conversion-First Architecture',
-        description: 'High-speed landing pages and websites engineered specifically to turn site visitors into qualified leads.',
-        icon: RocketLaunch,
-      },
-      {
-        title: 'Optimized Performance & Architectural Integrity',
-        description: 'Engineered for maximum uptime, sub-second load times, and 60 FPS fluidity across all modern browsers.',
-        icon: ShieldCheck,
-      },
-    ],
-  },
-  {
-    label: 'Growth & Automation Engine',
-    services: [
-      {
-        title: 'In-Depth Growth Analytics',
-        description: 'Powerful insights into visitor behavior and precision tracking to make data-driven decisions for your business.',
-        icon: ChartLineUp,
-      },
-      {
-        title: 'Strategic Growth Design',
-        description: 'SEO-optimized page structures and precision messaging designed to put your business in front of your ideal customers.',
-        icon: Sparkle,
-      },
-      {
-        title: 'Digital Systems & AI Workforce',
-        description: 'Gain access to digital employees, custom CRMs, and automated workflow systems that save time and automate client intake.',
-        icon: Robot,
-      },
-    ],
-  },
-];
 ---
 
 <Layout>
@@ -110,7 +62,7 @@ const serviceCategories = [
               </div>
               <div class="hero-stagger-2 flex flex-wrap items-center gap-3">
                 <DemoButton client:visible />
-                <a href="#packages" class="cta-secondary inline-flex items-center gap-2 rounded-full border border-[#121212]/15 bg-[#121212]/5 px-5 py-3 text-sm font-semibold text-[#121212] transition hover:bg-[#121212]/10 dark:border-white/15 dark:bg-white/10 dark:text-white dark:hover:bg-white/20" aria-label="View our pricing and service packages">
+                <a href="#projects" class="cta-secondary inline-flex items-center gap-2 rounded-full border border-[#121212]/15 bg-[#121212]/5 px-5 py-3 text-sm font-semibold text-[#121212] transition hover:bg-[#121212]/10 dark:border-white/15 dark:bg-white/10 dark:text-white dark:hover:bg-white/20" aria-label="View our project gallery">
                   See what we optimize
                   <ArrowRight size={18} weight="bold" aria-hidden="true" />
                 </a>
@@ -134,29 +86,7 @@ const serviceCategories = [
               <p class="max-w-3xl text-base leading-7 text-[#4b5563] dark:text-[#d5dde4]">Stop settling for slow, one-size-fits-all platforms. We combine AI-driven development with human strategy to build custom, high-performance websites that capture leads and scale your brand.</p>
             </div>
           </div>
-            <div class="space-y-12">
-              {serviceCategories.map((category) => (
-                <div>
-                  <h3 class="mb-5 text-sm font-black uppercase tracking-[0.2em] text-[#121212]/60 dark:text-[#F7F7F7]/60">{category.label}</h3>
-                  <ScrollRevealStagger client:visible staggerDelay={100} threshold={0.2}>
-                    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                      {category.services.map((service) => {
-                        const Icon = service.icon;
-                        return (
-                          <article class="p-1">
-                            <div class="mb-4 inline-flex text-[#008C9E] dark:text-[#4CAF50]">
-                              <Icon size={20} weight="bold" />
-                            </div>
-                            <h3 class="text-lg font-semibold text-[#121212] dark:text-[#F7F7F7]">{service.title}</h3>
-                            <p class="mt-2 text-sm leading-7 text-[#4b5563] dark:text-[#d5dde4]">{service.description}</p>
-                          </article>
-                        );
-                      })}
-                    </div>
-                  </ScrollRevealStagger>
-                </div>
-              ))}
-            </div>
+          <ServiceFocus client:visible />
           </div>
       </section>
 

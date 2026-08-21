@@ -13,6 +13,7 @@ import {
   Database,
   type Icon,
 } from '@phosphor-icons/react';
+import MobileAccordionItem from './MobileAccordionItem';
 
 type PriceUnit = 'mo' | 'one-time' | 'quote';
 
@@ -174,7 +175,8 @@ export default function AddOnsSection() {
         provided after a brief discovery call to ensure the solution perfectly matches your operational needs.
       </p>
 
-      <div className="mt-10 space-y-12">
+      {/* Tablet and up: full always-visible grid per category */}
+      <div className="mt-10 hidden md:block md:space-y-12">
         {addonCategories.map((category) => {
           const CategoryIcon = category.icon;
           return (
@@ -206,6 +208,44 @@ export default function AddOnsSection() {
             </div>
           );
         })}
+      </div>
+
+      {/* Mobile: collapsed-by-default accordions, one tap reveals a category's options */}
+      <div className="mt-8 space-y-3 md:hidden">
+        {addonCategories.map((category) => (
+          <MobileAccordionItem
+            key={category.title}
+            icon={category.icon}
+            title={category.title}
+            meta={`${category.items.length} option${category.items.length > 1 ? 's' : ''}`}
+          >
+            <div className="space-y-3">
+              {category.items.map((item) => {
+                const ItemIcon = item.icon;
+                return (
+                  <div
+                    key={item.name}
+                    className="rounded-xl border border-black/10 bg-white/60 p-4 dark:border-white/10 dark:bg-white/5"
+                  >
+                    <div className="flex items-center gap-2">
+                      <ItemIcon size={16} weight="bold" className="text-[#008C9E] dark:text-[#4CAF50]" />
+                      <span className="text-sm font-bold text-[#121212] dark:text-[#F7F7F7]">{item.name}</span>
+                    </div>
+                    <div className="mt-1.5 flex items-baseline gap-1.5">
+                      <span className="text-lg font-black text-[#008C9E] dark:text-[#4CAF50]">{item.price}</span>
+                      {item.unit !== 'quote' && (
+                        <span className="text-[10px] font-semibold uppercase tracking-wide text-[#4b5563] dark:text-[#d5dde4]">
+                          {item.unit === 'mo' ? '/mo' : 'one-time'}
+                        </span>
+                      )}
+                    </div>
+                    <p className="mt-1.5 text-xs leading-5 text-[#4b5563] dark:text-[#d5dde4]">{item.description}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </MobileAccordionItem>
+        ))}
       </div>
     </div>
   );

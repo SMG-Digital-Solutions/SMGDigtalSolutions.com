@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { Calculator, CheckCircle, Circle } from '@phosphor-icons/react';
+import { CaretDown, Calculator, CheckCircle, Circle } from '@phosphor-icons/react';
 import { openBookingDrawer } from './BookingDrawer';
 
 type Unit = 'mo' | 'once';
@@ -52,6 +52,7 @@ function AnimatedNumber({ value }: { value: number }) {
 }
 
 export default function InteractiveQuoteCalculator() {
+  const [isOpen, setIsOpen] = useState(false);
   const [basePlanId, setBasePlanId] = useState<string>(basePlanOptions[0].id);
   const [selectedAddonIds, setSelectedAddonIds] = useState<string[]>([]);
 
@@ -99,14 +100,32 @@ export default function InteractiveQuoteCalculator() {
 
   return (
     <div className="rounded-[2rem] border border-black/10 bg-white/80 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-[#1A2B3C]/70 sm:p-8">
-      <div className="mb-6 flex items-center gap-2">
+      <button
+        type="button"
+        onClick={() => setIsOpen((v) => !v)}
+        aria-expanded={isOpen}
+        className="flex w-full items-center gap-2 text-left md:cursor-default"
+      >
         <Calculator size={22} weight="bold" className="text-[#008C9E] dark:text-[#4CAF50]" />
-        <h3 className="text-xl font-black tracking-tight text-[#121212] dark:text-[#F7F7F7]">
+        <h3 className="flex-1 text-xl font-black tracking-tight text-[#121212] dark:text-[#F7F7F7]">
           Build your quote
         </h3>
-      </div>
+        <CaretDown
+          size={18}
+          weight="bold"
+          className={`shrink-0 text-[#121212]/50 transition-transform duration-300 dark:text-white/50 md:hidden ${
+            isOpen ? 'rotate-180' : ''
+          }`}
+        />
+      </button>
 
-      <div className="grid gap-8 lg:grid-cols-[1.3fr_1fr]">
+      <div
+        className={`grid transition-[grid-template-rows] duration-300 ease-out md:!grid-rows-[1fr] ${
+          isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+        }`}
+      >
+        <div className="overflow-hidden">
+          <div className="mt-6 grid gap-8 lg:grid-cols-[1.3fr_1fr]">
         <div className="space-y-8">
           <div>
             <p className="mb-3 text-sm font-semibold text-[#121212] dark:text-[#F7F7F7]">1. Choose a base plan</p>
@@ -211,6 +230,8 @@ export default function InteractiveQuoteCalculator() {
           >
             Get this quote
           </button>
+        </div>
+      </div>
         </div>
       </div>
     </div>
