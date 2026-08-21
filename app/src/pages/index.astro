@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { ArrowRight, InstagramLogo, LinkedinLogo, FacebookLogo } from '@phosphor-icons/react';
+import { ArrowRight } from '@phosphor-icons/react';
 import DemoButton from '../components/DemoButton';
 import HeroFloatingCard from '../components/HeroFloatingCard';
 import TypedHeadline from '../components/TypedHeadline';
@@ -12,6 +12,7 @@ import Services from '../components/Services.astro';
 import ServiceFocus from '../components/ServiceFocus';
 import ProjectsGallery from '../components/ProjectsGallery.astro';
 import ScrollRevealImmediate from '../components/ScrollRevealImmediate';
+import Footer from '../components/Footer.astro';
 import logo from '../assets/Logo-Removed-Background.svg';
 ---
 
@@ -34,7 +35,7 @@ import logo from '../assets/Logo-Removed-Background.svg';
       </nav>
     </header>
 
-    <main>
+    <main id="main-content">
       <section class="relative overflow-hidden" aria-labelledby="hero-heading">
         <div aria-hidden="true" class="hero-blob hero-blob-a"></div>
         <div aria-hidden="true" class="hero-blob hero-blob-b"></div>
@@ -121,47 +122,6 @@ import logo from '../assets/Logo-Removed-Background.svg';
       </section>
     </main>
 
-    <footer class="bg-[#0A1419] dark:bg-[#0A1419] text-white">
-      <div class="shell py-16">
-        <div class="grid grid-cols-2 gap-12 lg:gap-24">
-          {/* Left Column */}
-          <div class="flex flex-col items-start">
-            <div class="mb-6">
-              <Image src={logo} alt="SMG Digital Solutions" width={140} height={40} class="h-12 w-auto object-contain" />
-            </div>
-            <p class="mb-8 text-sm font-semibold text-white/90">SMG Digital Solutions</p>
-            <div class="flex gap-4">
-              <a href="https://www.instagram.com/smgdigital.solutions?igsh=bzdyYTYwZjNlN2l0" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="text-white/70 transition hover:text-[#4CAF50]">
-                <InstagramLogo size={24} weight="fill" />
-              </a>
-              <a href="https://www.linkedin.com/company/smgdigitalsolutions/?viewAsMember=true" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="text-white/70 transition hover:text-[#4CAF50]">
-                <LinkedinLogo size={24} weight="fill" />
-              </a>
-              <a href="https://www.facebook.com/share/1FoMrG2Zab/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="text-white/70 transition hover:text-[#4CAF50]">
-                <FacebookLogo size={24} weight="fill" />
-              </a>
-            </div>
-          </div>
-
-          {/* Right Column */}
-          <div class="flex flex-col items-end text-right">
-            <nav class="mb-8 space-y-2">
-              <a href="#services" class="block text-sm text-white/80 transition hover:text-[#4CAF50]">Services</a>
-              <a href="#packages" class="block text-sm text-white/80 transition hover:text-[#4CAF50]">Pricing</a>
-              <a href="#contact" class="block text-sm text-white/80 transition hover:text-[#4CAF50]">Contact</a>
-            </nav>
-            <div class="space-y-2 text-sm">
-              <a href="tel:407-270-1023" class="block text-white/80 transition hover:text-[#4CAF50]">407-270-1023</a>
-              <a href="mailto:hello@smgdigitalsolutions.com" class="block text-white/80 transition hover:text-[#4CAF50]">hello@smgdigitalsolutions.com</a>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom divider */}
-        <div class="border-t border-white/10 mt-12 pt-6">
-          <p class="text-xs text-white/50 text-center">© 2024 SMG Digital Solutions. All rights reserved.</p>
-        </div>
-      </div>
-    </footer>
+    <Footer />
   </div>
 </Layout>

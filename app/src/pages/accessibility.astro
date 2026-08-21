@@ -1,0 +1,134 @@
+---
+import { Image } from 'astro:assets';
+import { ArrowLeft } from '@phosphor-icons/react';
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+import logo from '../assets/Logo-Removed-Background.svg';
+
+const LAST_REVIEWED = 'August 21, 2026';
+---
+
+<Layout
+  title="Accessibility Statement | SMG Digital Solutions"
+  description="SMG Digital Solutions' commitment to digital accessibility, the standards we target, and how to reach us with feedback."
+>
+  <div id="top" class="min-h-screen bg-[#F7F7F7] text-[#121212] transition-colors duration-200 dark:bg-[#121212] dark:text-[#F7F7F7]">
+    <header class="w-full">
+      <nav class="w-full bg-[#00416A] text-white shadow-sm dark:bg-[#072938]" aria-label="Primary">
+        <div class="shell mx-auto flex items-center justify-between gap-4 px-4 py-3">
+          <a href="/" class="flex items-center gap-4">
+            <div class="flex h-12 max-w-[190px] items-center">
+              <Image src={logo} alt="SMG Digital Solutions" width={180} height={48} class="h-full w-auto object-contain" />
+            </div>
+          </a>
+          <a
+            href="/"
+            class="inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-white/90 transition hover:bg-white/10"
+          >
+            <ArrowLeft size={16} weight="bold" aria-hidden="true" />
+            Back to home
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <section class="shell py-12 sm:py-16" aria-labelledby="accessibility-heading">
+        <div class="mx-auto max-w-3xl rounded-[2rem] border border-black/10 bg-white/80 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-[#1A2B3C]/70 sm:p-10">
+          <p class="text-sm font-semibold uppercase tracking-[0.25em] text-[#008C9E] dark:text-[#4CAF50]">
+            Accessibility
+          </p>
+          <h1 id="accessibility-heading" class="mt-3 text-3xl font-black tracking-tight text-[#121212] dark:text-[#F7F7F7]">
+            Accessibility Statement
+          </h1>
+          <p class="mt-2 text-sm text-[#4b5563] dark:text-[#d5dde4]">Last reviewed: {LAST_REVIEWED}</p>
+
+          <div class="mt-8 space-y-8 text-base leading-7 text-[#334155] [&_a]:font-semibold [&_a]:text-[#008C9E] [&_a:hover]:underline dark:text-[#cbd5e1] dark:[&_a]:text-[#4CAF50]">
+            <section aria-labelledby="commitment-heading">
+              <h2 id="commitment-heading" class="text-xl font-black tracking-tight text-[#121212] dark:text-[#F7F7F7]">
+                Our commitment
+              </h2>
+              <p class="mt-3">
+                SMG Digital Solutions is committed to making
+                <span class="font-semibold">smgdigitalsolutions.com</span> usable by as many people as possible,
+                including people who use assistive technology such as screen readers, switch devices, or
+                keyboard-only navigation, and people who have requested reduced motion or a specific color
+                scheme at the operating-system level.
+              </p>
+            </section>
+
+            <section aria-labelledby="standard-heading">
+              <h2 id="standard-heading" class="text-xl font-black tracking-tight text-[#121212] dark:text-[#F7F7F7]">
+                Conformance target
+              </h2>
+              <p class="mt-3">
+                We design and build this site to meet the
+                <a href="https://www.w3.org/TR/WCAG21/" target="_blank" rel="noopener noreferrer">
+                  Web Content Accessibility Guidelines (WCAG) 2.1
+                </a>
+                at Level AA. WCAG defines requirements for making web content more accessible, and conformance
+                to it is an ongoing effort rather than a one-time achievement — we review and improve the site
+                on a rolling basis rather than claiming perfect, permanent compliance.
+              </p>
+            </section>
+
+            <section aria-labelledby="measures-heading">
+              <h2 id="measures-heading" class="text-xl font-black tracking-tight text-[#121212] dark:text-[#F7F7F7]">
+                Measures we take
+              </h2>
+              <ul class="mt-3 list-disc space-y-2 pl-5">
+                <li>Semantic HTML landmarks (header, nav, main, footer) and a logical heading structure.</li>
+                <li>A "skip to main content" link for keyboard and screen reader users.</li>
+                <li>Visible focus indicators and a full keyboard-operable interface, including a focus trap and
+                  focus return on the booking/quote request dialog.</li>
+                <li>ARIA roles and states (dialog, tablist, carousel, disclosure) on interactive widgets, matched
+                  to their actual keyboard behavior.</li>
+                <li>Respect for your operating system's reduced-motion preference: animations are shortened or
+                  removed automatically when <code>prefers-reduced-motion: reduce</code> is set.</li>
+                <li>A light/dark theme toggle, with the choice remembered between visits.</li>
+                <li>Text alternatives for meaningful images and icons, and decorative graphics hidden from
+                  assistive technology.</li>
+                <li>Form fields with associated labels, and visible, programmatically announced error messages
+                  if a submission fails.</li>
+              </ul>
+            </section>
+
+            <section aria-labelledby="limitations-heading">
+              <h2 id="limitations-heading" class="text-xl font-black tracking-tight text-[#121212] dark:text-[#F7F7F7]">
+                Known limitations
+              </h2>
+              <p class="mt-3">
+                Some content is outside our direct control, including project screenshots linking to live demo
+                sites hosted separately, and third-party services we embed or link to for booking and form
+                submission. We can't guarantee the accessibility of those external destinations. If you
+                encounter a problem on smgdigitalsolutions.com itself, please let us know using the contact
+                details below.
+              </p>
+            </section>
+
+            <section aria-labelledby="feedback-heading">
+              <h2 id="feedback-heading" class="text-xl font-black tracking-tight text-[#121212] dark:text-[#F7F7F7]">
+                Feedback
+              </h2>
+              <p class="mt-3">
+                We welcome your feedback on the accessibility of this site. If you encounter a barrier, or an
+                area you'd like to see improved, please contact us:
+              </p>
+              <ul class="mt-3 space-y-1">
+                <li>
+                  Email: <a href="mailto:hello@smgdigitalsolutions.com">hello@smgdigitalsolutions.com</a>
+                </li>
+                <li>
+                  Phone: <a href="tel:407-270-1023">407-270-1023</a>
+                </li>
+              </ul>
+              <p class="mt-3">We try to respond to accessibility feedback within a few business days.</p>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+  </div>
+</Layout>

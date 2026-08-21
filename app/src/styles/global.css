@@ -47,6 +47,28 @@ body {
   box-sizing: border-box;
 }
 
+/*
+ * WCAG 2.3.3 (Animation from Interactions) safety net.
+ * Component-specific reduced-motion overrides elsewhere in this file (and in
+ * animations.css) remain authoritative for their own effects; this rule is a
+ * catch-all so no CSS transition/animation is missed for users who have
+ * requested reduced motion at the OS level.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 @layer components {
   .shell {
     width: 100%;

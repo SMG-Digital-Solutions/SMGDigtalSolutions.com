@@ -2,29 +2,31 @@ import { List, X } from '@phosphor-icons/react';
 import { useEffect, useState } from 'react';
 import ThemeToggle from './ThemeToggle';
 
+// Absolute `/#section` form (not a bare `#section`) so these links resolve
+// correctly from any page on the site, not just `/`.
 const links = [
   {
-    href: '#top',
+    href: '/#top',
     label: 'Home',
     ariaLabel: 'Scroll to top of page',
   },
   {
-    href: '#services',
+    href: '/#services',
     label: 'Services',
     ariaLabel: 'Explore service offerings',
   },
   {
-    href: '#projects',
+    href: '/#projects',
     label: 'Projects',
     ariaLabel: 'Explore project and case study gallery',
   },
   {
-    href: '#packages',
+    href: '/#packages',
     label: 'Pricing',
     ariaLabel: 'View pricing and packages',
   },
   {
-    href: '#contact',
+    href: '/#contact',
     label: 'Contact',
     ariaLabel: 'Scroll to contact form',
   },

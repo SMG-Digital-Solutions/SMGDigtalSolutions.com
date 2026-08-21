@@ -1,4 +1,4 @@
-import { motion, type Variants } from 'framer-motion';
+import { motion, MotionConfig, type Variants } from 'framer-motion';
 import {
   Wrench,
   MapPin,
@@ -164,89 +164,100 @@ function AddonCard({ item }: { item: AddonItem }) {
   );
 }
 
+/**
+ * Add-Ons section: renders a full always-visible grid per category on
+ * tablet/desktop, and collapsed-by-default accordions on mobile so the
+ * mobile layout isn't just a condensed copy of the desktop one (see
+ * MobileAccordionItem). Both variants live in the DOM simultaneously and
+ * Tailwind's `md:` breakpoint decides which one is visible.
+ */
 export default function AddOnsSection() {
   return (
-    <div>
-      <h2 className="text-center text-2xl font-black tracking-tight text-[#121212] dark:text-[#F7F7F7]">
-        Add-Ons
-      </h2>
-      <p className="mx-auto mt-3 max-w-4xl text-center text-sm leading-6 text-[#4b5563] dark:text-[#d5dde4]">
-        Prices vary based on integration complexity and business-specific automation requirements. Custom quotes are
-        provided after a brief discovery call to ensure the solution perfectly matches your operational needs.
-      </p>
+    <MotionConfig reducedMotion="user">
+      <div>
+        <h2 className="text-center text-2xl font-black tracking-tight text-[#121212] dark:text-[#F7F7F7]">
+          Add-Ons
+        </h2>
+        <p className="mx-auto mt-3 max-w-4xl text-center text-sm leading-6 text-[#4b5563] dark:text-[#d5dde4]">
+          Prices vary based on integration complexity and business-specific automation requirements. Custom quotes
+          are provided after a brief discovery call to ensure the solution perfectly matches your operational needs.
+        </p>
 
-      {/* Tablet and up: full always-visible grid per category */}
-      <div className="mt-10 hidden md:block md:space-y-12">
-        {addonCategories.map((category) => {
-          const CategoryIcon = category.icon;
-          return (
-            <div key={category.title}>
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.4 }}
-                transition={{ duration: 0.4, ease: 'easeOut' }}
-                className="mb-4 flex items-center gap-2"
-              >
-                <CategoryIcon size={20} weight="bold" className="text-[#008C9E] dark:text-[#4CAF50]" />
-                <h3 className="text-lg font-black tracking-tight text-[#121212] dark:text-[#F7F7F7]">
-                  {category.title}
-                </h3>
-              </motion.div>
+        {/* Tablet and up: full always-visible grid per category */}
+        <div className="mt-10 hidden md:block md:space-y-12">
+          {addonCategories.map((category) => {
+            const CategoryIcon = category.icon;
+            return (
+              <div key={category.title}>
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.4 }}
+                  transition={{ duration: 0.4, ease: 'easeOut' }}
+                  className="mb-4 flex items-center gap-2"
+                >
+                  <CategoryIcon size={20} weight="bold" className="text-[#008C9E] dark:text-[#4CAF50]" />
+                  <h3 className="text-lg font-black tracking-tight text-[#121212] dark:text-[#F7F7F7]">
+                    {category.title}
+                  </h3>
+                </motion.div>
 
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
-                variants={gridVariants}
-                className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
-              >
-                {category.items.map((item) => (
-                  <AddonCard key={item.name} item={item} />
-                ))}
-              </motion.div>
-            </div>
-          );
-        })}
-      </div>
+                <motion.div
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.2 }}
+                  variants={gridVariants}
+                  className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+                >
+                  {category.items.map((item) => (
+                    <AddonCard key={item.name} item={item} />
+                  ))}
+                </motion.div>
+              </div>
+            );
+          })}
+        </div>
 
-      {/* Mobile: collapsed-by-default accordions, one tap reveals a category's options */}
-      <div className="mt-8 space-y-3 md:hidden">
-        {addonCategories.map((category) => (
-          <MobileAccordionItem
-            key={category.title}
-            icon={category.icon}
-            title={category.title}
-            meta={`${category.items.length} option${category.items.length > 1 ? 's' : ''}`}
-          >
-            <div className="space-y-3">
-              {category.items.map((item) => {
-                const ItemIcon = item.icon;
-                return (
-                  <div
-                    key={item.name}
-                    className="rounded-xl border border-black/10 bg-white/60 p-4 dark:border-white/10 dark:bg-white/5"
-                  >
-                    <div className="flex items-center gap-2">
-                      <ItemIcon size={16} weight="bold" className="text-[#008C9E] dark:text-[#4CAF50]" />
-                      <span className="text-sm font-bold text-[#121212] dark:text-[#F7F7F7]">{item.name}</span>
+        {/* Mobile: collapsed-by-default accordions, one tap reveals a category's options */}
+        <div className="mt-8 space-y-3 md:hidden">
+          {addonCategories.map((category) => (
+            <MobileAccordionItem
+              key={category.title}
+              icon={category.icon}
+              title={category.title}
+              meta={`${category.items.length} option${category.items.length > 1 ? 's' : ''}`}
+            >
+              <div className="space-y-3">
+                {category.items.map((item) => {
+                  const ItemIcon = item.icon;
+                  return (
+                    <div
+                      key={item.name}
+                      className="rounded-xl border border-black/10 bg-white/60 p-4 dark:border-white/10 dark:bg-white/5"
+                    >
+                      <div className="flex items-center gap-2">
+                        <ItemIcon size={16} weight="bold" className="text-[#008C9E] dark:text-[#4CAF50]" />
+                        <span className="text-sm font-bold text-[#121212] dark:text-[#F7F7F7]">{item.name}</span>
+                      </div>
+                      <div className="mt-1.5 flex items-baseline gap-1.5">
+                        <span className="text-lg font-black text-[#008C9E] dark:text-[#4CAF50]">{item.price}</span>
+                        {item.unit !== 'quote' && (
+                          <span className="text-[10px] font-semibold uppercase tracking-wide text-[#4b5563] dark:text-[#d5dde4]">
+                            {item.unit === 'mo' ? '/mo' : 'one-time'}
+                          </span>
+                        )}
+                      </div>
+                      <p className="mt-1.5 text-xs leading-5 text-[#4b5563] dark:text-[#d5dde4]">
+                        {item.description}
+                      </p>
                     </div>
-                    <div className="mt-1.5 flex items-baseline gap-1.5">
-                      <span className="text-lg font-black text-[#008C9E] dark:text-[#4CAF50]">{item.price}</span>
-                      {item.unit !== 'quote' && (
-                        <span className="text-[10px] font-semibold uppercase tracking-wide text-[#4b5563] dark:text-[#d5dde4]">
-                          {item.unit === 'mo' ? '/mo' : 'one-time'}
-                        </span>
-                      )}
-                    </div>
-                    <p className="mt-1.5 text-xs leading-5 text-[#4b5563] dark:text-[#d5dde4]">{item.description}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </MobileAccordionItem>
-        ))}
+                  );
+                })}
+              </div>
+            </MobileAccordionItem>
+          ))}
+        </div>
       </div>
-    </div>
+    </MotionConfig>
   );
 }

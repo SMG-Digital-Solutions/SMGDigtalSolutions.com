@@ -39,6 +39,19 @@ const {
     <title>{title}</title>
   </head>
   <body class="min-h-screen bg-[#F7F7F7] text-[#121212] antialiased transition-colors duration-200 dark:bg-[#121212] dark:text-[#F7F7F7]">
+    <!--
+      Skip link (WCAG 2.4.1 Bypass Blocks): lets keyboard and screen reader
+      users jump straight past the repeated header/nav to the page's main
+      content. Visually hidden until it receives keyboard focus (the first
+      Tab press on the page), per the standard "sr-only until focused"
+      pattern — it never appears for mouse users.
+    -->
+    <a
+      href="#main-content"
+      class="sr-only z-[100] rounded-full bg-[#008C9E] px-5 py-3 text-sm font-semibold text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4 dark:bg-[#4CAF50]"
+    >
+      Skip to main content
+    </a>
     <slot />
   </body>
 </html>

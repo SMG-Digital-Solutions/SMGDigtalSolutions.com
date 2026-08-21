@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
 interface TypedHeadlineProps {
@@ -13,17 +13,23 @@ const BLINK_DURATION = 1.8;
 export default function TypedHeadline({ staticText, typedText, className = '' }: TypedHeadlineProps) {
   const typedCharacters = typedText.split('');
   const delayPerChar = TYPE_DURATION / typedCharacters.length;
+  const prefersReducedMotion = useReducedMotion();
 
   const containerRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wasVisibleRef = useRef(false);
 
   const [isVisible, setIsVisible] = useState(false);
-  const [visibleChars, setVisibleChars] = useState(0);
-  const [phase, setPhase] = useState<'typing' | 'blinking' | 'done'>('typing');
+  // Reduced-motion visitors get the full headline immediately instead of a
+  // character-by-character reveal (WCAG 2.3.3, and avoids a screen reader
+  // re-announcing the text as it grows).
+  const [visibleChars, setVisibleChars] = useState(prefersReducedMotion ? typedCharacters.length : 0);
+  const [phase, setPhase] = useState<'typing' | 'blinking' | 'done'>(prefersReducedMotion ? 'done' : 'typing');
 
   // Track visibility and reset when scrolling back into view
   useEffect(() => {
+    if (prefersReducedMotion) return;
+
     const node = containerRef.current;
     if (!node) return;
     const observer = new IntersectionObserver(
@@ -40,11 +46,11 @@ export default function TypedHeadline({ staticText, typedText, className = '' }:
     );
     observer.observe(node);
     return () => observer.disconnect();
-  }, []);
+  }, [prefersReducedMotion]);
 
   // Run the animation once while visible
   useEffect(() => {
-    if (!isVisible || phase === 'done') return;
+    if (prefersReducedMotion || !isVisible || phase === 'done') return;
 
     if (phase === 'typing') {
       if (visibleChars < typedCharacters.length) {
@@ -61,7 +67,7 @@ export default function TypedHeadline({ staticText, typedText, className = '' }:
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, [isVisible, phase, visibleChars, typedCharacters.length, delayPerChar]);
+  }, [prefersReducedMotion, isVisible, phase, visibleChars, typedCharacters.length, delayPerChar]);
 
   const containerVariants = {
     hidden: { opacity: 0 },

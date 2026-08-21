@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, MotionConfig } from 'framer-motion';
 import { CheckCircle } from '@phosphor-icons/react';
 import PricingToggle from './PricingToggle';
 import { openBookingDrawer } from './BookingDrawer';
@@ -184,38 +184,40 @@ export default function PricingPlans() {
   const plans = mode === 'monthly' ? monthlyPlans : onetimePlans;
 
   return (
-    <div>
-      <div className="flex justify-center">
-        <PricingToggle
-          value={mode}
-          onChange={(value) => setMode(value as BillingMode)}
-          options={[
-            { label: 'Monthly Subscription', value: 'monthly' },
-            { label: 'One-Time Build', value: 'onetime' },
-          ]}
-        />
-      </div>
+    <MotionConfig reducedMotion="user">
+      <div>
+        <div className="flex justify-center">
+          <PricingToggle
+            value={mode}
+            onChange={(value) => setMode(value as BillingMode)}
+            options={[
+              { label: 'Monthly Subscription', value: 'monthly' },
+              { label: 'One-Time Build', value: 'onetime' },
+            ]}
+          />
+        </div>
 
-      {/* Tablet and up: full grid, all plans visible at once */}
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={mode}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -12 }}
-          transition={{ duration: 0.25, ease: 'easeOut' }}
-          className={`mt-8 hidden gap-6 md:grid ${mode === 'monthly' ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}
-        >
-          {plans.map((plan) => (
-            <PlanCard key={plan.tier} plan={plan} />
-          ))}
-        </motion.div>
-      </AnimatePresence>
+        {/* Tablet and up: full grid, all plans visible at once */}
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={mode}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className={`mt-8 hidden gap-6 md:grid ${mode === 'monthly' ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}
+          >
+            {plans.map((plan) => (
+              <PlanCard key={plan.tier} plan={plan} />
+            ))}
+          </motion.div>
+        </AnimatePresence>
 
-      {/* Mobile: swipeable one-card-at-a-time carousel */}
-      <div className="mt-8">
-        <MobilePlanCarousel plans={plans} />
+        {/* Mobile: swipeable one-card-at-a-time carousel */}
+        <div className="mt-8">
+          <MobilePlanCarousel plans={plans} />
+        </div>
       </div>
-    </div>
+    </MotionConfig>
   );
 }
