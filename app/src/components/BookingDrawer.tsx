@@ -3,10 +3,20 @@ import { AnimatePresence, motion, MotionConfig } from 'framer-motion';
 import { CalendarCheck, PaperPlaneTilt, X } from '@phosphor-icons/react';
 import FormField from './FormField';
 import FormErrorMessage from './FormErrorMessage';
+import { submitLead } from '../lib/leadsApi';
 
 export interface BookingDrawerPayload {
   context?: string;
   summaryLines?: string[];
+  /**
+   * Flags this submission as a demo request in the admin app (separate
+   * "Pending Demos" queue + "new demo request" notification, distinct from
+   * a general lead). No current trigger on the site sets this yet — the
+   * "Request your demo today" button still goes to an external Tally.so
+   * form — but any future demo-specific CTA can open this drawer with
+   * `isDemoRequest: true` and it'll flow into the right place.
+   */
+  isDemoRequest?: boolean;
 }
 
 interface BookingFormData {
@@ -17,7 +27,6 @@ interface BookingFormData {
 }
 
 const EMPTY_FORM: BookingFormData = { name: '', email: '', phone: '', notes: '' };
-const BOOKING_ENDPOINT = 'https://formsubmit.co/smgdigitalsolutions@outlook.com';
 const GENERIC_ERROR_MESSAGE =
   "We couldn't send your request. Please try again, or email us directly at hello@smgdigitalsolutions.com.";
 
@@ -127,27 +136,17 @@ export default function BookingDrawer() {
     setSubmitError(null);
 
     try {
-      const response = await fetch(BOOKING_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          notes: formData.notes,
-          request: payload.context ?? 'General booking request',
-          selection: payload.summaryLines?.join(' | ') ?? '',
-          _subject: 'New booking / quote request',
-          _captcha: 'false',
-        }),
-      });
+      const contextParts = [payload.context, ...(payload.summaryLines ?? [])].filter(Boolean);
 
-      if (!response.ok) {
-        throw new Error(`Booking submission failed with status ${response.status}`);
-      }
+      await submitLead({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.notes,
+        source: 'BOOKING_DRAWER',
+        context: contextParts.length > 0 ? contextParts.join('\n') : undefined,
+        isDemoRequest: payload.isDemoRequest ?? false,
+      });
 
       setShowSuccess(true);
       setFormData(EMPTY_FORM);

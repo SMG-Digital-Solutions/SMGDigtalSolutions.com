@@ -114,6 +114,7 @@ function PlanCard({ plan, className = '' }: { plan: Plan; className?: string }) 
           })
         }
         className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[#008C9E] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#006a73] dark:bg-[#4CAF50] dark:hover:bg-[#379d55]"
+        data-cta={`pricing-${plan.tier.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
       >
         Get started
       </button>

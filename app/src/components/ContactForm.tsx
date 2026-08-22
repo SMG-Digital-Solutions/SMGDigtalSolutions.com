@@ -2,8 +2,8 @@ import { useState, type FormEvent } from 'react';
 import { CheckCircle } from '@phosphor-icons/react';
 import FormField from './FormField';
 import FormErrorMessage from './FormErrorMessage';
+import { submitLead } from '../lib/leadsApi';
 
-const CONTACT_ENDPOINT = 'https://formsubmit.co/smgdigitalsolutions@outlook.com';
 const GENERIC_ERROR_MESSAGE =
   "We couldn't send your message. Please try again, or email us directly at hello@smgdigitalsolutions.com.";
 
@@ -16,10 +16,11 @@ interface ContactFormData {
 const EMPTY_FORM: ContactFormData = { name: '', email: '', message: '' };
 
 /**
- * Primary "Contact us" form. Submits to formsubmit.co (a static-site form
- * relay — no backend of our own is required) and shows a success modal on
- * completion, or a visible, screen-reader-announced error if the request
- * fails so a failed submit is never silent.
+ * Primary "Contact us" form. Submits to the companion admin app's
+ * /api/leads endpoint (see src/lib/leadsApi.ts) so every submission lands
+ * in the admin Leads inbox, and shows a success modal on completion, or a
+ * visible, screen-reader-announced error if the request fails so a failed
+ * submit is never silent.
  */
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -36,24 +37,12 @@ export default function ContactForm() {
     setSubmitError(null);
 
     try {
-      const response = await fetch(CONTACT_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-          _subject: 'New contact form submission',
-          _captcha: 'false',
-        }),
+      await submitLead({
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+        source: 'CONTACT_FORM',
       });
-
-      if (!response.ok) {
-        throw new Error(`Contact form submission failed with status ${response.status}`);
-      }
 
       setShowSuccess(true);
       setFormData(EMPTY_FORM);

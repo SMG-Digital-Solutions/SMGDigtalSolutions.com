@@ -255,6 +255,7 @@ export default function InteractiveQuoteCalculator() {
                   type="button"
                   onClick={handleRequestQuote}
                   className="mt-8 inline-flex w-full items-center justify-center rounded-full bg-[#008C9E] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#006a73] dark:bg-[#4CAF50] dark:hover:bg-[#379d55]"
+                  data-cta="quote-calculator-get-quote"
                 >
                   Get this quote
                 </button>

@@ -36,6 +36,7 @@ export default function DemoButton() {
         style={{ willChange: 'transform, box-shadow' }}
         className="inline-flex min-w-[252px] items-center justify-center gap-2 rounded-full bg-[#4CAF50] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_16px_36px_rgba(76,175,80,0.24)] transition hover:bg-[#3f9743] disabled:cursor-not-allowed disabled:opacity-80 dark:bg-[#4CAF50]"
         aria-label="Request a custom demo"
+        data-cta="demo-button"
       >
         <AnimatePresence mode="wait" initial={false}>
           {isLoading ? (

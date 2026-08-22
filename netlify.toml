@@ -3,6 +3,27 @@
   publish = "dist"
   command = "npm run build"
 
+# Proxies /admin/* to the separate admin app (its own Netlify site + Next.js
+# + Prisma/Neon, kept out of this repo — see smg-admin/README.md). This is a
+# rewrite (status = 200), not a redirect, so the visitor's URL bar always
+# stays on smgdigitalsolutions.com — the split between this static site and
+# the admin app is invisible to them. Must come before the catch-all rule
+# below (Netlify uses the first matching rule).
+#
+# Replace <admin-site-name> with the admin app's real Netlify site name
+# once it's deployed.
+[[redirects]]
+  from = "/admin"
+  to = "https://<admin-site-name>.netlify.app/admin"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/admin/*"
+  to = "https://<admin-site-name>.netlify.app/admin/:splat"
+  status = 200
+  force = true
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
