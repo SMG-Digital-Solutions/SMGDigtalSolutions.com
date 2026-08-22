@@ -9,18 +9,15 @@
 # stays on smgdigitalsolutions.com — the split between this static site and
 # the admin app is invisible to them. Must come before the catch-all rule
 # below (Netlify uses the first matching rule).
-#
-# Replace <admin-site-name> with the admin app's real Netlify site name
-# once it's deployed.
 [[redirects]]
   from = "/admin"
-  to = "https://<admin-site-name>.netlify.app/admin"
+  to = "https://smgdigitalsolutionsadmin.netlify.app/admin"
   status = 200
   force = true
 
 [[redirects]]
   from = "/admin/*"
-  to = "https://<admin-site-name>.netlify.app/admin/:splat"
+  to = "https://smgdigitalsolutionsadmin.netlify.app/admin/:splat"
   status = 200
   force = true
 
