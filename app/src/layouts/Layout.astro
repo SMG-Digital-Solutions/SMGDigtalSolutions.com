@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import logo from '../assets/Logo-Removed-Background.svg';
+import { THEME_STORAGE_KEY } from '../lib/theme';
 
 const {
   title = 'SMG Digital Solutions | High-Converting Websites for Florida & USVI',
@@ -13,6 +14,33 @@ const {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--
+      Theme init: runs synchronously, before anything paints, so the site
+      never flashes the wrong theme on load. Resolution order: an explicit
+      choice the visitor already made via the toggle (localStorage) wins;
+      otherwise follow the OS/browser's prefers-color-scheme live; otherwise
+      default to light. ThemeToggle.tsx reads the class this script applies
+      rather than re-deriving it, so there's exactly one place this logic
+      lives. Wrapped in try/catch because localStorage can throw in some
+      locked-down browser configurations (e.g. storage fully disabled).
+    -->
+    <script is:inline define:vars={{ THEME_STORAGE_KEY }}>
+      (function initTheme() {
+        try {
+          var stored = localStorage.getItem(THEME_STORAGE_KEY);
+          var theme =
+            stored === 'dark' || stored === 'light'
+              ? stored
+              : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'dark'
+                : 'light';
+          document.documentElement.classList.toggle('dark', theme === 'dark');
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (error) {
+          // Storage unavailable — fall back silently to the light default.
+        }
+      })();
+    </script>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#00416A" />
     <meta name="generator" content={Astro.generator} />

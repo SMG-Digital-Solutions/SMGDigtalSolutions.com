@@ -1,37 +1,67 @@
 import { MoonStars, Sun } from '@phosphor-icons/react';
 import { motion, MotionConfig } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { THEME_STORAGE_KEY, type ThemeMode } from '../lib/theme';
 
-const THEME_KEY = 'smg-theme-preference';
-
-type ThemeMode = 'dark' | 'light';
+const applyTheme = (theme: ThemeMode) => {
+  document.documentElement.classList.toggle('dark', theme === 'dark');
+  document.documentElement.setAttribute('data-theme', theme);
+};
 
 /**
- * Light/dark mode toggle. Persists the choice to localStorage and mirrors it
- * onto `<html>` as both a class (drives Tailwind's `dark:` variant) and a
- * `data-theme` attribute (available as a CSS hook for anything that isn't a
- * Tailwind utility). `MotionConfig reducedMotion="user"` collapses the
- * icon-swap animation to an instant transition for visitors who prefer
- * reduced motion.
+ * Light/dark mode toggle. The *initial* theme (stored choice → OS
+ * preference → light default) is resolved by a blocking inline script in
+ * Layout.astro before this component ever hydrates, so the page itself is
+ * already in the right theme from first paint regardless of when this
+ * component hydrates. This component just mirrors that into React state on
+ * mount, purely to drive its own icon/label — it deliberately does that in
+ * a `useEffect` rather than a `useState` initializer, because this
+ * component is also rendered server-side (Astro SSR, where `document`
+ * doesn't exist) and a client render has to match that server output
+ * exactly or React logs a hydration mismatch. The tradeoff is a
+ * sub-frame-scale delay before the icon reflects the real theme on
+ * mount, which isn't perceptible in practice.
  */
 export default function ThemeToggle() {
   const [theme, setTheme] = useState<ThemeMode>('light');
 
   useEffect(() => {
-    const storedTheme = window.localStorage.getItem(THEME_KEY) as ThemeMode | null;
-    const initialTheme = storedTheme ?? 'light';
+    setTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
 
-    setTheme(initialTheme);
-    document.documentElement.classList.toggle('dark', initialTheme === 'dark');
-    document.documentElement.setAttribute('data-theme', initialTheme);
+    // Until the visitor makes an explicit choice (via the toggle below),
+    // keep following the OS/browser preference live — e.g. macOS switching
+    // to dark mode at sunset should update the site too. Once they've
+    // toggled at least once, that explicit choice sticks and this listener
+    // is skipped on future mounts.
+    let hasExplicitPreference = false;
+    try {
+      hasExplicitPreference = window.localStorage.getItem(THEME_STORAGE_KEY) !== null;
+    } catch {
+      // Storage unavailable — treat as "no explicit preference" and keep
+      // following the OS setting for this session.
+    }
+    if (hasExplicitPreference) return;
+
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleSystemThemeChange = (event: MediaQueryListEvent) => {
+      const nextTheme: ThemeMode = event.matches ? 'dark' : 'light';
+      setTheme(nextTheme);
+      applyTheme(nextTheme);
+    };
+    media.addEventListener('change', handleSystemThemeChange);
+    return () => media.removeEventListener('change', handleSystemThemeChange);
   }, []);
 
   const toggleTheme = () => {
     const nextTheme: ThemeMode = theme === 'dark' ? 'light' : 'dark';
     setTheme(nextTheme);
-    document.documentElement.classList.toggle('dark', nextTheme === 'dark');
-    document.documentElement.setAttribute('data-theme', nextTheme);
-    window.localStorage.setItem(THEME_KEY, nextTheme);
+    applyTheme(nextTheme);
+    try {
+      window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+    } catch {
+      // Storage unavailable — the theme still applies for this page view,
+      // it just won't persist (or override OS-live-sync) on the next visit.
+    }
   };
 
   return (
