@@ -11,10 +11,8 @@ export interface BookingDrawerPayload {
   /**
    * Flags this submission as a demo request in the admin app (separate
    * "Pending Demos" queue + "new demo request" notification, distinct from
-   * a general lead). No current trigger on the site sets this yet — the
-   * "Request your demo today" button still goes to an external Tally.so
-   * form — but any future demo-specific CTA can open this drawer with
-   * `isDemoRequest: true` and it'll flow into the right place.
+   * a general lead). Set by the "Request your demo today" button
+   * (DemoButton.tsx); also swaps the drawer's own heading copy below.
    */
   isDemoRequest?: boolean;
 }
@@ -193,13 +191,13 @@ export default function BookingDrawer() {
                 <div>
                   <p className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.25em] text-[#008C9E] dark:text-[#4CAF50]">
                     <CalendarCheck size={16} weight="bold" aria-hidden="true" />
-                    Book a call
+                    {payload.isDemoRequest ? 'Request a demo' : 'Book a call'}
                   </p>
                   <h2
                     id="booking-drawer-heading"
                     className="mt-2 text-2xl font-black tracking-tight text-[#121212] dark:text-[#F7F7F7]"
                   >
-                    {showSuccess ? 'Request received!' : 'Request your quote'}
+                    {showSuccess ? 'Request received!' : payload.isDemoRequest ? 'Request your demo' : 'Request your quote'}
                   </h2>
                 </div>
                 <button
@@ -212,7 +210,7 @@ export default function BookingDrawer() {
                 </button>
               </div>
 
-              {!showSuccess && payload.context && (
+              {!showSuccess && payload.context && !payload.isDemoRequest && (
                 <div className="mt-5 rounded-2xl border border-black/10 bg-white/70 p-4 text-sm dark:border-white/10 dark:bg-white/5">
                   <p className="font-semibold text-[#121212] dark:text-[#F7F7F7]">{payload.context}</p>
                   {payload.summaryLines && payload.summaryLines.length > 0 && (
@@ -231,7 +229,9 @@ export default function BookingDrawer() {
                     <CalendarCheck size={32} weight="bold" className="text-[#4CAF50]" aria-hidden="true" />
                   </div>
                   <p className="text-sm leading-6 text-[#4b5563] dark:text-[#d5dde4]">
-                    Thanks for reaching out. We&apos;ll follow up shortly with next steps and a tailored quote.
+                    {payload.isDemoRequest
+                      ? "Thanks for reaching out. We'll follow up shortly to schedule your demo."
+                      : "Thanks for reaching out. We'll follow up shortly with next steps and a tailored quote."}
                   </p>
                   <button
                     type="button"
