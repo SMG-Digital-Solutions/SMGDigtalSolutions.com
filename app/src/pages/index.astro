@@ -12,8 +12,12 @@ import Services from '../components/Services.astro';
 import ServiceFocus from '../components/ServiceFocus';
 import ProjectsGallery from '../components/ProjectsGallery.astro';
 import ScrollRevealImmediate from '../components/ScrollRevealImmediate';
+import InlineSignupForm from '../components/InlineSignupForm';
 import Footer from '../components/Footer.astro';
 import logo from '../assets/Logo-Removed-Background.svg';
+import { getSiteContent } from '../lib/content';
+
+const content = await getSiteContent();
 ---
 
 <Layout>
@@ -87,15 +91,15 @@ import logo from '../assets/Logo-Removed-Background.svg';
               <p class="max-w-3xl text-base leading-7 text-[#4b5563] dark:text-[#d5dde4]">Stop settling for slow, one-size-fits-all platforms. We combine AI-driven development with human strategy to build custom, high-performance websites that capture leads and scale your brand.</p>
             </div>
           </div>
-          <ServiceFocus client:visible />
+          <ServiceFocus client:visible categories={content.serviceCategories} />
           </div>
       </section>
 
       <!-- Projects / Case Studies -->
-      <ProjectsGallery />
+      <ProjectsGallery projects={content.galleryProjects} />
 
       <!-- Pricing and Packages -->
-      <Services />
+      <Services addOnCategories={content.addOnCategories} pricingCallout={content.banners.pricingCallout} />
 
       <section class="shell py-8" aria-labelledby="final-cta-heading">
         <div class="rounded-[2rem] border border-black/10 bg-white/80 p-8 text-center shadow-sm backdrop-blur dark:border-white/10 dark:bg-[#1A2B3C]/70">
@@ -120,6 +124,14 @@ import logo from '../assets/Logo-Removed-Background.svg';
           </div>
         </div>
       </section>
+
+      {content.signupForms.inline && (
+        <section class="shell py-16">
+          <div class="mx-auto max-w-2xl">
+            <InlineSignupForm client:visible form={content.signupForms.inline} />
+          </div>
+        </section>
+      )}
     </main>
 
     <Footer />

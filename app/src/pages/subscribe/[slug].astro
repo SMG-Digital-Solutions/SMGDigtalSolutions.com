@@ -1,0 +1,56 @@
+---
+import { Image } from 'astro:assets';
+import { ArrowLeft } from '@phosphor-icons/react';
+import Layout from '../../layouts/Layout.astro';
+import Footer from '../../components/Footer.astro';
+import InlineSignupForm from '../../components/InlineSignupForm';
+import logo from '../../assets/Logo-Removed-Background.svg';
+import { getSiteContent } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const content = await getSiteContent();
+  return content.signupForms.linkInBio.map((form) => ({
+    params: { slug: form.slug },
+    props: { form },
+  }));
+}
+
+const { form } = Astro.props;
+---
+
+<Layout title={`${form.headline} | SMG Digital Solutions`} description={form.bodyText ?? form.headline}>
+  <div id="top" class="min-h-screen bg-[#F7F7F7] text-[#121212] transition-colors duration-200 dark:bg-[#121212] dark:text-[#F7F7F7]">
+    <header class="w-full">
+      <nav class="w-full bg-[#00416A] text-white shadow-sm dark:bg-[#072938]" aria-label="Primary">
+        <div class="shell mx-auto flex items-center justify-between gap-4 px-4 py-3">
+          <a href="/" class="flex items-center gap-4">
+            <div class="flex h-12 max-w-[190px] items-center">
+              <Image src={logo} alt="SMG Digital Solutions" width={180} height={48} class="h-full w-auto object-contain" />
+            </div>
+          </a>
+          <a
+            href="/"
+            class="inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-white/90 transition hover:bg-white/10"
+          >
+            <ArrowLeft size={16} weight="bold" aria-hidden="true" />
+            Back to home
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <section class="shell flex items-center justify-center py-16" aria-labelledby="subscribe-heading">
+        <div class="mx-auto w-full max-w-lg">
+          <h1 id="subscribe-heading" class="sr-only">{form.headline}</h1>
+          <InlineSignupForm
+            client:load
+            form={{ id: form.id, placement: 'INLINE', headline: form.headline, bodyText: form.bodyText, buttonLabel: form.buttonLabel, imageUrl: form.imageUrl }}
+          />
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+  </div>
+</Layout>

@@ -1,0 +1,57 @@
+---
+import { Image } from 'astro:assets';
+import { ArrowLeft } from '@phosphor-icons/react';
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+import HealthCheckTool from '../components/HealthCheckTool';
+import logo from '../assets/Logo-Removed-Background.svg';
+import { getSiteContent } from '../lib/content';
+
+const content = await getSiteContent();
+---
+
+<Layout
+  title="Free Website Health Check | SMG Digital Solutions"
+  description="Get a free, instant scored breakdown of your website's speed, SEO, and online presence — see exactly what's costing you customers."
+>
+  <div id="top" class="min-h-screen bg-[#F7F7F7] text-[#121212] transition-colors duration-200 dark:bg-[#121212] dark:text-[#F7F7F7]">
+    <header class="w-full">
+      <nav class="w-full bg-[#00416A] text-white shadow-sm dark:bg-[#072938]" aria-label="Primary">
+        <div class="shell mx-auto flex items-center justify-between gap-4 px-4 py-3">
+          <a href="/" class="flex items-center gap-4">
+            <div class="flex h-12 max-w-[190px] items-center">
+              <Image src={logo} alt="SMG Digital Solutions" width={180} height={48} class="h-full w-auto object-contain" />
+            </div>
+          </a>
+          <a
+            href="/"
+            class="inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-white/90 transition hover:bg-white/10"
+          >
+            <ArrowLeft size={16} weight="bold" aria-hidden="true" />
+            Back to home
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <section class="shell py-12 sm:py-16" aria-labelledby="health-check-heading">
+        <div class="mx-auto max-w-2xl text-center">
+          <p class="text-sm font-semibold uppercase tracking-[0.25em] text-[#008C9E] dark:text-[#4CAF50]">Free tool</p>
+          <h1 id="health-check-heading" class="mt-3 text-3xl font-black tracking-tight text-[#121212] dark:text-[#F7F7F7] sm:text-4xl">
+            Website Health Check
+          </h1>
+          <p class="mx-auto mt-4 max-w-xl text-base leading-7 text-[#4b5563] dark:text-[#d5dde4]">
+            See exactly how your website scores on speed, SEO, and online presence — free, in under a minute.
+          </p>
+        </div>
+
+        <div class="mt-10">
+          <HealthCheckTool client:load form={content.signupForms.healthCheck} />
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+  </div>
+</Layout>

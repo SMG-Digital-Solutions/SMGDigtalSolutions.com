@@ -1,0 +1,75 @@
+---
+import type { BannerContent } from '../lib/content';
+
+interface Props {
+  banner: BannerContent | null;
+}
+
+const { banner } = Astro.props;
+---
+
+{
+  banner && (
+    <div
+      id="announcement-banner"
+      data-banner-id={banner.id}
+      class="relative flex items-center justify-center gap-3 bg-[#00416A] px-10 py-2.5 text-center text-sm text-white dark:bg-[#072938]"
+      role="region"
+      aria-label="Announcement"
+    >
+      <p class="leading-5">
+        {banner.message}
+        {banner.ctaLabel && banner.ctaHref && (
+          <a href={banner.ctaHref} class="ml-2 font-semibold underline underline-offset-2 hover:no-underline">
+            {banner.ctaLabel}
+          </a>
+        )}
+      </p>
+      <button
+        type="button"
+        id="announcement-banner-dismiss"
+        aria-label="Dismiss announcement"
+        class="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-white/80 transition hover:bg-white/10 hover:text-white"
+      >
+        <svg width="16" height="16" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+          <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z" />
+        </svg>
+      </button>
+    </div>
+  )
+}
+
+<script is:inline define:vars={{ bannerId: banner?.id ?? null }}>
+  // Dismissal persists via localStorage only (no cookies, no server round
+  // trip) — matches the site's existing privacy-conscious, no-third-party
+  // approach (see theme init / tracking.ts). Runs immediately after the
+  // banner element in document order, before the browser paints it, so a
+  // previously-dismissed banner doesn't flash visible on reload.
+  (function initAnnouncementBanner() {
+    if (!bannerId) return;
+    var STORAGE_KEY = 'smg-dismissed-banner';
+    var el = document.getElementById('announcement-banner');
+    if (!el) return;
+
+    try {
+      if (localStorage.getItem(STORAGE_KEY) === bannerId) {
+        el.style.display = 'none';
+        return;
+      }
+    } catch (error) {
+      // Storage unavailable — banner just stays visible, not dismissible this session.
+    }
+
+    var dismissBtn = document.getElementById('announcement-banner-dismiss');
+    if (dismissBtn) {
+      dismissBtn.addEventListener('click', function () {
+        try {
+          localStorage.setItem(STORAGE_KEY, bannerId);
+        } catch (error) {
+          // Storage unavailable — dismissal just won't persist past this page view.
+        }
+        el.style.display = 'none';
+      });
+    }
+  })();
+</script>

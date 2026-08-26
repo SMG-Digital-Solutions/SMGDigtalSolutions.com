@@ -2,13 +2,27 @@
 import PricingPlans from './PricingPlans.tsx';
 import InteractiveQuoteCalculator from './InteractiveQuoteCalculator.tsx';
 import AddOnsSection from './AddOnsSection.tsx';
+import type { AddOnCategoryContent, BannerContent } from '../lib/content';
+
+interface Props {
+  addOnCategories: AddOnCategoryContent[];
+  pricingCallout: BannerContent | null;
+}
+
+const { addOnCategories, pricingCallout } = Astro.props;
+
+// Falls back to the original launch copy only if the CMS has no active
+// pricing callout at all (e.g. it was deactivated without a replacement) —
+// this is a display default, not a substitute for real seeded content.
+const calloutMessage =
+  pricingCallout?.message ??
+  "Traditional agencies charge $5,000 to $60,000 for a custom web build. We don't. Get an enterprise-grade, high-converting website engineered for speed—without the bloated agency price tag.";
 ---
 
 <section id="packages" class="shell py-8" aria-labelledby="packages-heading">
   <div class="mb-10 rounded-[2rem] bg-[#00416A] p-8 text-center shadow-sm dark:bg-[#072938] sm:p-10">
     <p class="mx-auto max-w-3xl text-lg font-semibold leading-8 text-white sm:text-xl">
-      Traditional agencies charge $5,000 to $60,000 for a custom web build. We don&rsquo;t. Get an
-      enterprise-grade, high-converting website engineered for speed&mdash;without the bloated agency price tag.
+      {calloutMessage}
     </p>
   </div>
 
@@ -20,7 +34,7 @@ import AddOnsSection from './AddOnsSection.tsx';
   <PricingPlans client:visible />
 
   <div class="mt-14">
-    <AddOnsSection client:visible />
+    <AddOnsSection client:visible categories={addOnCategories} />
   </div>
 
   <div class="mt-14">

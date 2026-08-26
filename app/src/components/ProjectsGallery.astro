@@ -1,64 +1,27 @@
 ---
 import ScrollRevealStagger from './ScrollRevealStagger';
 import ProjectsCarousel from './ProjectsCarousel';
+import type { GalleryProjectContent } from '../lib/content';
 
-const projects = [
-  {
-    title: 'Handyman Service Demo Website',
-    type: 'Website Case Study',
-    image: '/images/projects/handyman-demo-hero.png',
-    imageAlt: 'Hero section screenshot of the Handyman Service demo website',
-    summary:
-      'A conversion-first website concept for a local handyman brand, designed to build trust quickly and drive quote requests with clear service messaging.',
-    highlights: ['High-contrast service-focused hero', 'Trust signals above the fold', 'Mobile-first CTA structure'],
-    stack: [
-      'Next.js 16',
-      'React 19',
-      'TypeScript',
-      'Tailwind CSS 4',
-      'Framer Motion',
-      'Vitest + Testing Library',
-      'ESLint (Next.js)',
-      '@phosphor-icons/react',
-      'jsdom',
-      'PostCSS'
-    ],
-    liveUrl: 'https://smghandymandemo.netlify.app/'
-  },
-  {
-    title: "Dawn's Beauty Studio Demo Website",
-    type: 'Website Case Study',
-    image: '/images/projects/dawns-beauty-hero.png',
-    imageAlt: "Hero section screenshot of the Dawn's Beauty hair, skin, and nail studio demo website",
-    summary:
-      'An editorial, image-forward concept for a New York hair, skin, and nail studio, built to feel upscale while keeping booking front and center.',
-    highlights: ['Elegant serif hero typography', 'Full-bleed lifestyle photography', 'Prominent booking CTA above the fold'],
-    stack: ['React', 'Vite', 'Tailwind CSS 4'],
-    liveUrl: 'https://chic-starlight-a2551f.netlify.app/'
-  },
-  {
-    title: 'Drywall & Texturing Contractor Demo Website',
-    type: 'Website Case Study',
-    image: '/images/projects/drywall-demo-hero.png',
-    imageAlt: 'Hero section screenshot of the DNA Texturing & Drywall of Orlando demo website',
-    summary:
-      'A conversion-focused site for a Central Florida drywall and texturing company, pairing bold headline messaging with trust signals and reviews to drive free-estimate requests.',
-    highlights: ['Bold high-contrast hero headline', 'Google rating and review count above the fold', 'Dual "Free Estimate" and "Call Now" CTAs'],
-    stack: ['Next.js', 'React', 'Tailwind CSS 4'],
-    liveUrl: 'https://drywall-demo.netlify.app/'
-  },
-  {
-    title: 'Painting Contractor Demo Website',
-    type: 'Website Case Study',
-    image: '/images/projects/painting-demo-hero.png',
-    imageAlt: 'Hero section screenshot of the Mike Jones Painting LLC demo website',
-    summary:
-      'A trust-building site for a veteran painting and drywall contractor in South Carolina, using licensing badges and a 5-star rating to reinforce credibility and drive quote requests.',
-    highlights: ['Full-bleed project photography hero', 'Licensed & insured and 5-star rating badges', 'Layered "Get a Free Quote" and click-to-call CTAs'],
-    stack: ['Next.js', 'React', 'Tailwind CSS 4'],
-    liveUrl: 'https://painting-demo-site.netlify.app/'
-  }
-];
+interface Props {
+  projects: GalleryProjectContent[];
+}
+
+const { projects: cmsProjects } = Astro.props;
+
+// ProjectsCarousel's own prop shape uses `image`, this content source uses
+// `imageUrl` — mapped here rather than renaming the carousel's prop, since
+// it's the more established name across that component's internals.
+const projects = cmsProjects.map((project) => ({
+  title: project.title,
+  type: project.type,
+  image: project.imageUrl,
+  imageAlt: project.imageAlt,
+  summary: project.summary,
+  highlights: project.highlights,
+  stack: project.stack,
+  liveUrl: project.liveUrl,
+}));
 ---
 
 <section id="projects" class="shell py-8" aria-labelledby="projects-heading">

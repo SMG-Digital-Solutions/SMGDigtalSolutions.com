@@ -2,11 +2,20 @@
 import '../styles/global.css';
 import logo from '../assets/Logo-Removed-Background.svg';
 import { THEME_STORAGE_KEY } from '../lib/theme';
+import { getSiteContent } from '../lib/content';
+import AnnouncementBanner from '../components/AnnouncementBanner.astro';
+import SignupPopup from '../components/SignupPopup';
 
 const {
   title = 'SMG Digital Solutions | High-Converting Websites for Florida & USVI',
   description = 'SMG Digital Solutions creates high-converting, high-performance websites for Florida and the U.S. Virgin Islands.',
 } = Astro.props;
+
+// Fetched independently from any page-level content fetch (index.astro does
+// its own, larger one) so every page using this layout shows the sitewide
+// announcement banner (and signup popup) without each page needing to
+// remember to pass it down.
+const { banners, signupForms } = await getSiteContent();
 ---
 
 <!doctype html>
@@ -78,6 +87,8 @@ const {
     >
       Skip to main content
     </a>
+    <AnnouncementBanner banner={banners.announcement} />
+    <SignupPopup client:idle form={signupForms.popup} />
     <slot />
     <!--
       Pageview + CTA-click tracking for the admin app's Analytics dashboard.
