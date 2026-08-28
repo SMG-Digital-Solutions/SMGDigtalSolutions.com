@@ -16,6 +16,27 @@ const {
 // announcement banner (and signup popup) without each page needing to
 // remember to pass it down.
 const { banners, signupForms } = await getSiteContent();
+
+// Astro.site (set in astro.config.mjs) + the current path — a static build
+// has no request context to infer the real origin from otherwise.
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'SMG Digital Solutions',
+  url: 'https://smgdigitalsolutions.com',
+  logo: new URL(logo.src, Astro.site).toString(),
+  description: 'SMG Digital Solutions creates high-converting, high-performance websites for Florida and the U.S. Virgin Islands.',
+  telephone: '+1-407-270-1023',
+  email: 'hello@smgdigitalsolutions.com',
+  areaServed: ['Florida', 'U.S. Virgin Islands'],
+  sameAs: [
+    'https://www.instagram.com/smgdigital.solutions',
+    'https://www.linkedin.com/company/smgdigitalsolutions/',
+    'https://www.facebook.com/share/1FoMrG2Zab/',
+  ],
+};
 ---
 
 <!doctype html>
@@ -56,6 +77,8 @@ const { banners, signupForms } = await getSiteContent();
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <link rel="canonical" href={canonicalUrl} />
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
     <link rel="icon" type="image/svg+xml" href={logo.src} />
     <link rel="preconnect" href="https://rsms.me" crossorigin />
     <link rel="dns-prefetch" href="https://instagram.com" />

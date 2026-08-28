@@ -6,6 +6,10 @@ import critters from '@critters-rs/astro';
 import { compression } from 'vite-plugin-compression2';
 
 export default defineConfig({
+  // Powers Astro.site, used for the canonical <link> in Layout.astro — a
+  // static build has no request context to infer the real origin from
+  // otherwise.
+  site: 'https://smgdigitalsolutions.com',
   integrations: [react(), tailwind({ applyBaseStyles: false }), critters()],
   vite: {
     plugins: [
