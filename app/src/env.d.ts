@@ -14,6 +14,12 @@ interface ImportMetaEnv {
    * Node's `fetch` during `astro build`.
    */
   readonly PUBLIC_ADMIN_ORIGIN?: string;
+  /**
+   * Google Analytics 4 Measurement ID (e.g. "G-XXXXXXXXXX"). The gtag.js
+   * snippet in Layout.astro only renders when this is set, so local dev
+   * builds don't send test traffic into the real GA4 property.
+   */
+  readonly PUBLIC_GA_MEASUREMENT_ID?: string;
 }
 
 interface ImportMeta {

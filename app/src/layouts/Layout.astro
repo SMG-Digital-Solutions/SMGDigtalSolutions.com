@@ -21,6 +21,10 @@ const { banners, signupForms } = await getSiteContent();
 // has no request context to infer the real origin from otherwise.
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 
+// Only rendered when set (production, via netlify.toml) — local dev builds
+// stay untracked so test traffic never lands in the real GA4 property.
+const gaMeasurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -42,6 +46,20 @@ const organizationSchema = {
 <!doctype html>
 <html lang="en" class="scroll-smooth">
   <head>
+    {gaMeasurementId && (
+      <>
+        <!-- Google tag (gtag.js) -->
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}></script>
+        <script is:inline define:vars={{ gaMeasurementId }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', gaMeasurementId);
+        </script>
+      </>
+    )}
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--
