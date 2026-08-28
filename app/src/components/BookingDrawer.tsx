@@ -83,6 +83,17 @@ export default function BookingDrawer() {
       setShowSuccess(false);
       setSubmitError(null);
       setIsOpen(true);
+      // Pre-fill notes with the quote calculator's line items (editable —
+      // the visitor can add to or trim it) so they aren't retyping what
+      // they already built. The static summary box below still shows the
+      // same breakdown read-only, as a reference if they clear this.
+      // Explicitly cleared (not left stale) for triggers with no
+      // summaryLines, so a previous quote breakdown never lingers into an
+      // unrelated demo request opened afterward.
+      setFormData((current) => ({
+        ...current,
+        notes: detail.summaryLines && detail.summaryLines.length > 0 ? detail.summaryLines.join('\n') : '',
+      }));
     };
     window.addEventListener(OPEN_EVENT, handleOpenRequest);
     return () => window.removeEventListener(OPEN_EVENT, handleOpenRequest);

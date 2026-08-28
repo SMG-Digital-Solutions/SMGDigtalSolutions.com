@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { ArrowRight, EnvelopeSimple, WarningCircle } from '@phosphor-icons/react';
 import FormField from './FormField';
 import FormErrorMessage from './FormErrorMessage';
@@ -14,6 +14,52 @@ function scoreColor(score: number): string {
   if (score >= 70) return 'text-[#4CAF50]';
   if (score >= 40) return 'text-[#e0a527]';
   return 'text-[#e05252]';
+}
+
+function scoreLabel(score: number): string {
+  if (score >= 85) return 'Excellent';
+  if (score >= 70) return 'Good';
+  if (score >= 40) return 'Needs improvement';
+  return 'Poor';
+}
+
+function scoreBadgeClasses(score: number): string {
+  if (score >= 70) return 'bg-[#4CAF50]/15 text-[#2f9e44] dark:bg-[#4CAF50]/20 dark:text-[#4CAF50]';
+  if (score >= 40) return 'bg-[#e0a527]/15 text-[#a3720f] dark:bg-[#e0a527]/20 dark:text-[#e0a527]';
+  return 'bg-[#e05252]/15 text-[#c23c3c] dark:bg-[#e05252]/20 dark:text-[#e05252]';
+}
+
+/**
+ * The real check is one request (crawl + PageSpeed + SEO scan all run
+ * together server-side), but it can take several real seconds — this
+ * cycles through what's actually happening so the form doesn't look
+ * frozen while it waits. Not tied to real backend progress events, just
+ * paced to roughly match how long each phase tends to take.
+ */
+const CHECK_STEPS = [
+  'Connecting to your site...',
+  'Checking SSL and security...',
+  'Testing page speed...',
+  'Scanning SEO signals...',
+  'Reviewing business details...',
+];
+const CHECK_STEP_INTERVAL_MS = 1800;
+
+function useCheckingStep(active: boolean): string {
+  const [stepIndex, setStepIndex] = useState(0);
+
+  useEffect(() => {
+    if (!active) {
+      setStepIndex(0);
+      return;
+    }
+    const interval = window.setInterval(() => {
+      setStepIndex((current) => Math.min(current + 1, CHECK_STEPS.length - 1));
+    }, CHECK_STEP_INTERVAL_MS);
+    return () => window.clearInterval(interval);
+  }, [active]);
+
+  return CHECK_STEPS[stepIndex];
 }
 
 interface HealthCheckToolProps {
@@ -40,6 +86,8 @@ export default function HealthCheckTool({ form, hideHeader = false }: HealthChec
 
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+
+  const checkingStep = useCheckingStep(isSubmitting && step === 'url');
 
   if (!form) return null;
 
@@ -113,7 +161,14 @@ export default function HealthCheckTool({ form, hideHeader = false }: HealthChec
               {!isSubmitting && <ArrowRight size={16} weight="bold" aria-hidden="true" />}
             </button>
           </form>
-          <p className="mt-3 text-xs text-[#4b5563]/80 dark:text-[#d5dde4]/70">No credit card required. Instant analysis.</p>
+          {isSubmitting ? (
+            <div role="status" className="mt-3 flex items-center gap-2 text-xs text-[#4b5563] dark:text-[#d5dde4]">
+              <span className="h-3 w-3 shrink-0 animate-spin rounded-full border-2 border-[#008C9E]/30 border-t-[#008C9E] dark:border-[#4CAF50]/30 dark:border-t-[#4CAF50]" />
+              {checkingStep}
+            </div>
+          ) : (
+            <p className="mt-3 text-xs text-[#4b5563]/80 dark:text-[#d5dde4]/70">No credit card required. Instant analysis.</p>
+          )}
         </div>
       )}
 
@@ -123,6 +178,9 @@ export default function HealthCheckTool({ form, hideHeader = false }: HealthChec
             <div>
               <p className={`text-4xl font-black ${scoreColor(teaser.overallScore)}`}>{teaser.overallScore}</p>
               <p className="text-xs text-[#4b5563] dark:text-[#d5dde4]">Overall health score</p>
+              <span className={`mt-1.5 inline-block rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${scoreBadgeClasses(teaser.overallScore)}`}>
+                {scoreLabel(teaser.overallScore)}
+              </span>
             </div>
             <div className="flex items-center gap-2 text-sm text-[#4b5563] dark:text-[#d5dde4]">
               <WarningCircle size={20} weight="bold" className="text-[#e0a527]" aria-hidden="true" />
