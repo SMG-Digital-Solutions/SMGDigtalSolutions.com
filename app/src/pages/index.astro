@@ -29,8 +29,8 @@ const healthCheckMetrics = [
 ];
 
 const clientLogos = [
-  { src: sculptivatedLogo, alt: 'Sculptivated Carnivores', className: 'h-12 sm:h-14' },
-  { src: vjdizzLogo, alt: 'vJDiZZ', className: 'h-20 sm:h-24' },
+  { src: sculptivatedLogo, alt: 'Sculptivated Carnivores', className: 'h-12 sm:h-14', caption: null },
+  { src: vjdizzLogo, alt: 'vJDiZZ', className: 'h-20 sm:h-24', caption: 'vJDiZZ — streamer & artist' },
 ];
 ---
 
@@ -95,10 +95,15 @@ const clientLogos = [
       <section class="shell py-6" aria-label="Trusted by">
         <div class="mx-auto flex max-w-4xl flex-col items-center gap-5 rounded-[1.5rem] border border-black/10 bg-white/80 px-6 py-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-[#1A2B3C]/70 sm:flex-row sm:justify-center sm:gap-10">
           <p class="text-xs font-semibold uppercase tracking-[0.25em] text-[#008C9E] dark:text-[#4CAF50]">Trusted by</p>
-          <div class="flex flex-wrap items-center justify-center gap-6">
+          <div class="flex flex-wrap items-start justify-center gap-6">
             {clientLogos.map((client) => (
-              <div class="rounded-xl bg-[#0F1B2C] px-4 py-3">
-                <Image src={client.src} alt={client.alt} class={`w-auto object-contain ${client.className}`} />
+              <div class="flex flex-col items-center gap-2">
+                <div class="rounded-xl bg-[#0F1B2C] px-4 py-3">
+                  <Image src={client.src} alt={client.alt} class={`w-auto object-contain ${client.className}`} />
+                </div>
+                {client.caption && (
+                  <p class="text-xs font-medium text-[#4b5563] dark:text-[#d5dde4]">{client.caption}</p>
+                )}
               </div>
             ))}
           </div>
