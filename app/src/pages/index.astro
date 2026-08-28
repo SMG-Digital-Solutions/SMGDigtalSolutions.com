@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { ArrowRight } from '@phosphor-icons/react';
+import { Gauge, MagnifyingGlass, ShieldCheck } from '@phosphor-icons/react';
 import DemoButton from '../components/DemoButton';
 import HeroFloatingCard from '../components/HeroFloatingCard';
 import TypedHeadline from '../components/TypedHeadline';
@@ -13,11 +13,18 @@ import ServiceFocus from '../components/ServiceFocus';
 import ProjectsGallery from '../components/ProjectsGallery.astro';
 import ScrollRevealImmediate from '../components/ScrollRevealImmediate';
 import InlineSignupForm from '../components/InlineSignupForm';
+import HealthCheckTool from '../components/HealthCheckTool';
 import Footer from '../components/Footer.astro';
 import logo from '../assets/Logo-Removed-Background.svg';
 import { getSiteContent } from '../lib/content';
 
 const content = await getSiteContent();
+
+const healthCheckMetrics = [
+  { icon: Gauge, label: 'Performance', description: 'Load speed and Core Web Vitals' },
+  { icon: MagnifyingGlass, label: 'SEO', description: 'Search visibility fundamentals' },
+  { icon: ShieldCheck, label: 'Security', description: 'HTTPS and baseline protections' },
+];
 ---
 
 <Layout>
@@ -67,10 +74,6 @@ const content = await getSiteContent();
               </div>
               <div class="hero-stagger-2 flex flex-wrap items-center gap-3">
                 <DemoButton client:visible />
-                <a href="#projects" class="cta-secondary inline-flex items-center gap-2 rounded-full border border-[#121212]/15 bg-[#121212]/5 px-5 py-3 text-sm font-semibold text-[#121212] transition hover:bg-[#121212]/10 dark:border-white/15 dark:bg-white/10 dark:text-white dark:hover:bg-white/20" aria-label="View our project gallery">
-                  See what we optimize
-                  <ArrowRight size={18} weight="bold" aria-hidden="true" />
-                </a>
               </div>
               <!-- Core growth outcome chips removed per user request -->
             </div>
@@ -97,6 +100,44 @@ const content = await getSiteContent();
 
       <!-- Projects / Case Studies -->
       <ProjectsGallery projects={content.galleryProjects} />
+
+      {content.signupForms.healthCheck && (
+        <section id="health-check" class="shell py-8" aria-labelledby="health-check-heading">
+          <div class="rounded-[2rem] border border-black/10 bg-white/80 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-[#1A2B3C]/70 sm:p-10">
+            <div class="mx-auto max-w-2xl text-center">
+              <p class="text-sm font-semibold uppercase tracking-[0.25em] text-[#008C9E] dark:text-[#4CAF50]">Free tool</p>
+              <h2 id="health-check-heading" class="mt-3 text-3xl font-black tracking-tight text-[#121212] dark:text-[#F7F7F7] sm:text-4xl">
+                Is Your Website Slowing Down Your Business?
+              </h2>
+              <p class="mx-auto mt-4 max-w-xl text-base leading-7 text-[#4b5563] dark:text-[#d5dde4]">
+                Get a instant, comprehensive audit of your site's performance, SEO, and security in under 60 seconds—completely free.
+              </p>
+            </div>
+
+            <div class="mx-auto mt-8 grid max-w-2xl gap-4 sm:grid-cols-3">
+              {healthCheckMetrics.map((metric) => (
+                <div class="flex items-center gap-3 rounded-2xl border border-black/10 bg-white/70 p-4 dark:border-white/10 dark:bg-white/5">
+                  <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#008C9E]/10 text-[#008C9E] dark:bg-[#4CAF50]/15 dark:text-[#4CAF50]">
+                    <metric.icon size={20} weight="bold" aria-hidden="true" />
+                  </span>
+                  <div>
+                    <p class="text-sm font-semibold text-[#121212] dark:text-[#F7F7F7]">{metric.label}</p>
+                    <p class="text-xs text-[#4b5563] dark:text-[#d5dde4]">{metric.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div class="mt-8">
+              <HealthCheckTool client:visible form={content.signupForms.healthCheck} hideHeader />
+            </div>
+
+            <p class="mx-auto mt-6 max-w-xl text-center text-sm text-[#4b5563] dark:text-[#d5dde4]">
+              Over 40% of visitors abandon a site that takes longer than 3 seconds to load. Know where your site stands today.
+            </p>
+          </div>
+        </section>
+      )}
 
       <!-- Pricing and Packages -->
       <Services addOnCategories={content.addOnCategories} pricingCallout={content.banners.pricingCallout} />

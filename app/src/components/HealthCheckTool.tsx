@@ -1,24 +1,25 @@
 import { useState, type FormEvent } from 'react';
-import { ArrowRight, CheckCircle, EnvelopeSimple, WarningCircle, XCircle } from '@phosphor-icons/react';
+import { ArrowRight, EnvelopeSimple, WarningCircle } from '@phosphor-icons/react';
 import FormField from './FormField';
 import FormErrorMessage from './FormErrorMessage';
-import { submitAuditRun, submitAuditUnlock, type AuditCategoryScore, type BusinessDetailCheck } from '../lib/subscribeApi';
+import { submitAuditRun, submitAuditUnlock } from '../lib/subscribeApi';
 import type { HealthCheckFormContent } from '../lib/content';
 
 const GENERIC_RUN_ERROR = "We couldn't run that check. Please try again in a moment.";
-const GENERIC_UNLOCK_ERROR = "We couldn't unlock your report. Please try again, or email us directly at hello@smgdigitalsolutions.com.";
+const GENERIC_UNLOCK_ERROR = "We couldn't send your results. Please try again, or email us directly at hello@smgdigitalsolutions.com.";
 
-type Step = 'url' | 'teaser' | 'unlocked';
-
-interface FullAudit {
-  healthScores: { overall: number; categories: AuditCategoryScore[] };
-  businessDetailChecks: BusinessDetailCheck[];
-}
+type Step = 'url' | 'teaser' | 'sent';
 
 function scoreColor(score: number): string {
   if (score >= 70) return 'text-[#4CAF50]';
   if (score >= 40) return 'text-[#e0a527]';
   return 'text-[#e05252]';
+}
+
+interface HealthCheckToolProps {
+  form: HealthCheckFormContent | null;
+  /** Skips the internal image/headline/bodyText block — used when the surrounding section (e.g. the homepage promo) already has its own headline and copy, so the widget doesn't repeat it. */
+  hideHeader?: boolean;
 }
 
 /**
@@ -28,7 +29,7 @@ function scoreColor(score: number): string {
  * actual list-acquisition mechanism, so it discloses the opt-in explicitly.
  * Renders nothing if no FULL_PAGE/WEBSITE_HEALTH_CHECK SignupForm is configured.
  */
-export default function HealthCheckTool({ form }: { form: HealthCheckFormContent | null }) {
+export default function HealthCheckTool({ form, hideHeader = false }: HealthCheckToolProps) {
   const [step, setStep] = useState<Step>('url');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -39,8 +40,6 @@ export default function HealthCheckTool({ form }: { form: HealthCheckFormContent
 
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
-  const [fullAudit, setFullAudit] = useState<FullAudit | null>(null);
-  const [reportUrl, setReportUrl] = useState<string | null>(null);
 
   if (!form) return null;
 
@@ -69,10 +68,11 @@ export default function HealthCheckTool({ form }: { form: HealthCheckFormContent
     setError(null);
 
     try {
-      const result = await submitAuditUnlock({ submissionId, email, name: name || undefined, formId: form.id });
-      setFullAudit(result.audit);
-      setReportUrl(result.reportUrl);
-      setStep('unlocked');
+      // The scored results and PDF link are delivered by email — never
+      // rendered inline here, so a captured email is the only way to see
+      // them, matching the acquisition-first design of this tool.
+      await submitAuditUnlock({ submissionId, email, name: name || undefined, formId: form.id });
+      setStep('sent');
     } catch (err) {
       console.error('Health check unlock error:', err);
       setError(err instanceof Error ? err.message : GENERIC_UNLOCK_ERROR);
@@ -83,31 +83,38 @@ export default function HealthCheckTool({ form }: { form: HealthCheckFormContent
 
   return (
     <div className="mx-auto max-w-2xl rounded-[1.5rem] border border-black/10 bg-white/70 p-6 dark:border-white/10 dark:bg-white/5 sm:p-8">
-      {form.imageUrl && <img src={form.imageUrl} alt="" className="mb-4 max-h-48 w-full rounded-xl object-cover" />}
-      <h2 className="text-xl font-black tracking-tight text-[#121212] dark:text-[#F7F7F7]">{form.headline}</h2>
-      {form.bodyText && <p className="mt-2 text-sm text-[#4b5563] dark:text-[#d5dde4]">{form.bodyText}</p>}
+      {!hideHeader && (
+        <>
+          {form.imageUrl && <img src={form.imageUrl} alt="" className="mb-4 max-h-48 w-full rounded-xl object-cover" />}
+          <h2 className="text-xl font-black tracking-tight text-[#121212] dark:text-[#F7F7F7]">{form.headline}</h2>
+          {form.bodyText && <p className="mt-2 text-sm text-[#4b5563] dark:text-[#d5dde4]">{form.bodyText}</p>}
+        </>
+      )}
 
       {step === 'url' && (
-        <form onSubmit={handleRunCheck} className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-end">
-          <FormField
-            label="Your website URL"
-            name="url"
-            value={url}
-            onChange={setUrl}
-            required
-            disabled={isSubmitting}
-            placeholder="https://yourbusiness.com"
-            className="sm:flex-1"
-          />
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-[#008C9E] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#006a73] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#4CAF50] dark:hover:bg-[#379d55]"
-          >
-            {isSubmitting ? 'Checking...' : form.buttonLabel}
-            {!isSubmitting && <ArrowRight size={16} weight="bold" aria-hidden="true" />}
-          </button>
-        </form>
+        <div className={hideHeader ? '' : 'mt-6'}>
+          <form onSubmit={handleRunCheck} className="flex flex-col gap-4 sm:flex-row sm:items-end">
+            <FormField
+              label="Enter your domain (e.g., yourwebsite.com)"
+              name="url"
+              value={url}
+              onChange={setUrl}
+              required
+              disabled={isSubmitting}
+              placeholder="yourwebsite.com"
+              className="sm:flex-1"
+            />
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#008C9E] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#006a73] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#4CAF50] dark:hover:bg-[#379d55]"
+            >
+              {isSubmitting ? 'Checking...' : form.buttonLabel}
+              {!isSubmitting && <ArrowRight size={16} weight="bold" aria-hidden="true" />}
+            </button>
+          </form>
+          <p className="mt-3 text-xs text-[#4b5563]/80 dark:text-[#d5dde4]/70">No credit card required. Instant analysis.</p>
+        </div>
       )}
 
       {step === 'teaser' && teaser && (
@@ -124,7 +131,7 @@ export default function HealthCheckTool({ form }: { form: HealthCheckFormContent
           </div>
 
           <form onSubmit={handleUnlock} className="mt-6 flex flex-col gap-4">
-            <p className="text-sm font-semibold text-[#121212] dark:text-[#F7F7F7]">Enter your email to see the full breakdown and get a PDF copy.</p>
+            <p className="text-sm font-semibold text-[#121212] dark:text-[#F7F7F7]">Enter your email and we&apos;ll send you the full breakdown and a PDF copy.</p>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
               <FormField label="Name (optional)" name="name" value={name} onChange={setName} disabled={isSubmitting} className="sm:flex-1" />
               <FormField label="Email" name="email" type="email" value={email} onChange={setEmail} required disabled={isSubmitting} className="sm:flex-1" />
@@ -133,68 +140,28 @@ export default function HealthCheckTool({ form }: { form: HealthCheckFormContent
                 disabled={isSubmitting}
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-[#008C9E] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#006a73] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#4CAF50] dark:hover:bg-[#379d55]"
               >
-                {isSubmitting ? 'Unlocking...' : 'See full results'}
+                {isSubmitting ? 'Sending...' : 'Email me my results'}
               </button>
             </div>
             <p className="text-xs text-[#4b5563]/80 dark:text-[#d5dde4]/70">
-              By unlocking your results, you&apos;re joining our email list — we&apos;ll send occasional updates, and you can unsubscribe anytime.
+              By requesting your results, you&apos;re joining our email list — we&apos;ll send occasional updates, and you can unsubscribe anytime.
             </p>
           </form>
         </div>
       )}
 
-      {step === 'unlocked' && fullAudit && (
-        <div className="mt-6 space-y-6">
-          <div className="flex items-center gap-2 text-sm text-[#4CAF50]" role="status">
-            <EnvelopeSimple size={18} weight="bold" aria-hidden="true" />
-            Your full report is ready{reportUrl ? ' and on its way to your inbox' : ''}.
+      {step === 'sent' && (
+        <div className="mt-6 flex flex-col items-center gap-3 rounded-2xl border border-black/10 bg-white/80 p-8 text-center dark:border-white/10 dark:bg-[#1A2B3C]/70">
+          <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#4CAF50]/20">
+            <EnvelopeSimple size={28} weight="bold" className="text-[#4CAF50]" aria-hidden="true" />
           </div>
-
-          <div className="rounded-2xl border border-black/10 bg-white/80 p-6 dark:border-white/10 dark:bg-[#1A2B3C]/70">
-            <p className={`text-4xl font-black ${scoreColor(fullAudit.healthScores.overall)}`}>{fullAudit.healthScores.overall}</p>
-            <p className="text-xs text-[#4b5563] dark:text-[#d5dde4]">Overall health score</p>
-
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {fullAudit.healthScores.categories.map((category) => (
-                <div key={category.key} className="flex items-center justify-between rounded-xl border border-black/5 bg-white/60 px-4 py-3 text-sm dark:border-white/5 dark:bg-white/5">
-                  <span className="text-[#4b5563] dark:text-[#d5dde4]">{category.label}</span>
-                  <span className={`font-bold ${category.assessed ? scoreColor(category.score) : 'text-[#4b5563]/50 dark:text-[#d5dde4]/40'}`}>
-                    {category.assessed ? `${category.score}%` : 'N/A'}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            {fullAudit.businessDetailChecks.map((check) => (
-              <div key={check.key} className="flex items-start gap-3 rounded-xl border border-black/5 bg-white/60 p-4 text-sm dark:border-white/5 dark:bg-white/5">
-                {check.assessed && check.ok ? (
-                  <CheckCircle size={20} weight="bold" className="mt-0.5 shrink-0 text-[#4CAF50]" aria-hidden="true" />
-                ) : check.assessed ? (
-                  <XCircle size={20} weight="bold" className="mt-0.5 shrink-0 text-[#e05252]" aria-hidden="true" />
-                ) : (
-                  <WarningCircle size={20} weight="bold" className="mt-0.5 shrink-0 text-[#4b5563]/50 dark:text-[#d5dde4]/40" aria-hidden="true" />
-                )}
-                <div>
-                  <p className="font-semibold text-[#121212] dark:text-[#F7F7F7]">{check.label}</p>
-                  <p className="mt-1 text-[#4b5563] dark:text-[#d5dde4]">{check.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {reportUrl && (
-            <a
-              href={reportUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-[#008C9E] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#006a73] dark:bg-[#4CAF50] dark:hover:bg-[#379d55]"
-            >
-              Download your PDF report
-              <ArrowRight size={16} weight="bold" aria-hidden="true" />
-            </a>
-          )}
+          <p role="status" className="text-base font-semibold text-[#121212] dark:text-[#F7F7F7]">
+            Your results are on their way!
+          </p>
+          <p className="text-sm text-[#4b5563] dark:text-[#d5dde4]">
+            We've sent your full Website Health Check results to <span className="font-semibold">{email}</span>. Check your inbox
+            (and spam folder, just in case).
+          </p>
         </div>
       )}
 

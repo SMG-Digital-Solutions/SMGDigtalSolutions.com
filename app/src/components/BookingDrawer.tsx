@@ -15,6 +15,18 @@ export interface BookingDrawerPayload {
    * (DemoButton.tsx); also swaps the drawer's own heading copy below.
    */
   isDemoRequest?: boolean;
+  /**
+   * Flags this submission as coming from the interactive quote calculator
+   * specifically (InteractiveQuoteCalculator.tsx's "Get this quote" button)
+   * — not the pricing plans' own "Get started" buttons, which open this
+   * same drawer but with a different intent (a fixed plan tier, not a
+   * built quote). Submits with source: 'QUOTE_REQUEST' instead of
+   * 'BOOKING_DRAWER', which the admin's /api/leads route uses to opt the
+   * visitor into the "Quote Builder" email list — so this also shows the
+   * list-opt-in disclosure below, matching every other signup capture on
+   * the site.
+   */
+  isQuoteBuilderRequest?: boolean;
 }
 
 interface BookingFormData {
@@ -141,7 +153,7 @@ export default function BookingDrawer() {
         email: formData.email,
         phone: formData.phone,
         message: formData.notes,
-        source: 'BOOKING_DRAWER',
+        source: payload.isQuoteBuilderRequest ? 'QUOTE_REQUEST' : 'BOOKING_DRAWER',
         context: contextParts.length > 0 ? contextParts.join('\n') : undefined,
         isDemoRequest: payload.isDemoRequest ?? false,
       });
@@ -278,6 +290,13 @@ export default function BookingDrawer() {
                     multiline
                     rows={4}
                   />
+
+                  {payload.isQuoteBuilderRequest && (
+                    <p className="text-xs text-[#4b5563]/80 dark:text-[#d5dde4]/70">
+                      By requesting your quote, you&apos;re also joining our email list — we&apos;ll send occasional updates, and you
+                      can unsubscribe anytime.
+                    </p>
+                  )}
 
                   {submitError && <FormErrorMessage message={submitError} />}
 

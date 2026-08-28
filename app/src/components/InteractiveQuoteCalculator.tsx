@@ -112,6 +112,7 @@ export default function InteractiveQuoteCalculator() {
     openBookingDrawer({
       context: 'Custom quote from calculator',
       summaryLines: [...summaryLines, ...totals],
+      isQuoteBuilderRequest: true,
     });
   };
 
