@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 import critters from '@critters-rs/astro';
+import sitemap from '@astrojs/sitemap';
 import { compression } from 'vite-plugin-compression2';
 
 export default defineConfig({
@@ -10,7 +11,17 @@ export default defineConfig({
   // static build has no request context to infer the real origin from
   // otherwise.
   site: 'https://smgdigitalsolutions.com',
-  integrations: [react(), tailwind({ applyBaseStyles: false }), critters()],
+  integrations: [
+    react(),
+    tailwind({ applyBaseStyles: false }),
+    critters(),
+    sitemap({
+      // /subscribe/[slug] pages are personal "link in bio" share links
+      // (see src/pages/subscribe/[slug].astro) — real, live pages, but not
+      // content meant to be discovered via search/sitemap.
+      filter: (page) => !page.includes('/subscribe/'),
+    }),
+  ],
   vite: {
     plugins: [
       compression({ algorithm: 'gzip' }),
