@@ -3,11 +3,13 @@
   publish = "dist"
   command = "npm run build"
 
-# GA4 Measurement IDs aren't secret — they're embedded in public client-side
-# JS on every page by design — so it's kept here rather than only in
-# Netlify's dashboard, which would be a second, easy-to-miss place to update.
+# GA4 Measurement IDs and Meta Pixel IDs aren't secret — they're embedded
+# in public client-side JS on every page by design — so they're kept here
+# rather than only in Netlify's dashboard, which would be a second,
+# easy-to-miss place to update.
 [build.environment]
   PUBLIC_GA_MEASUREMENT_ID = "G-11S4R4KSDV"
+  PUBLIC_META_PIXEL_ID = "2006679344053778"
 
 # Proxies /admin/* to the separate admin app (its own Netlify site + Next.js
 # + Prisma/Neon, kept out of this repo — see smg-admin/README.md). This is a

@@ -20,6 +20,12 @@ interface ImportMetaEnv {
    * builds don't send test traffic into the real GA4 property.
    */
   readonly PUBLIC_GA_MEASUREMENT_ID?: string;
+  /**
+   * Meta (Facebook) Pixel ID (a numeric string). The fbq() snippet in
+   * Layout.astro only renders when this is set, same env-gating reason as
+   * PUBLIC_GA_MEASUREMENT_ID — no local dev test traffic in the real pixel.
+   */
+  readonly PUBLIC_META_PIXEL_ID?: string;
 }
 
 interface ImportMeta {
