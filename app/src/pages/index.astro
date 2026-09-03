@@ -14,6 +14,7 @@ import ProjectsGallery from '../components/ProjectsGallery.astro';
 import ScrollRevealImmediate from '../components/ScrollRevealImmediate';
 import InlineSignupForm from '../components/InlineSignupForm';
 import HealthCheckTool from '../components/HealthCheckTool';
+import FaqSection from '../components/FaqSection.astro';
 import Footer from '../components/Footer.astro';
 import logo from '../assets/Logo-Removed-Background.svg';
 import sculptivatedLogo from '../assets/Sculptivated-logo.png';
@@ -198,6 +199,8 @@ const clientLogos = [
           </div>
         </section>
       )}
+
+      {content.faqs.length > 0 && <FaqSection faqs={content.faqs} />}
     </main>
 
     <Footer />

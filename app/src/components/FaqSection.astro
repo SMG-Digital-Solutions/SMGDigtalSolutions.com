@@ -1,0 +1,37 @@
+---
+import type { FaqContent } from '../lib/content';
+
+interface Props {
+  faqs: FaqContent[];
+}
+
+const { faqs } = Astro.props;
+---
+
+<section id="faq" class="shell py-16" aria-labelledby="faq-heading">
+  <div class="mx-auto max-w-3xl">
+    <div class="mb-8 text-center">
+      <p class="text-sm font-semibold uppercase tracking-[0.25em] text-[#008C9E] dark:text-[#4CAF50]">FAQ</p>
+      <h2 id="faq-heading" class="mt-2 text-3xl font-black tracking-tight text-[#121212] dark:text-[#F7F7F7]">
+        Frequently asked questions
+      </h2>
+    </div>
+
+    <div class="space-y-3">
+      {faqs.map((faq) => (
+        <details class="group rounded-2xl border border-black/10 bg-white/80 px-5 py-4 shadow-sm backdrop-blur dark:border-white/10 dark:bg-[#1A2B3C]/70">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-left text-base font-semibold text-[#121212] marker:content-none dark:text-[#F7F7F7]">
+            {faq.question}
+            <span
+              aria-hidden="true"
+              class="shrink-0 text-xl font-normal text-[#008C9E] transition-transform duration-200 group-open:rotate-45 dark:text-[#4CAF50]"
+            >
+              +
+            </span>
+          </summary>
+          <p class="mt-3 text-sm leading-6 text-[#4b5563] dark:text-[#d5dde4]">{faq.answer}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

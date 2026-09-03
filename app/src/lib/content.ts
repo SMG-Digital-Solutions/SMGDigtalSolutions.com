@@ -92,6 +92,12 @@ export interface LinkInBioFormContent {
   imageUrl: string | null;
 }
 
+export interface FaqContent {
+  id: string;
+  question: string;
+  answer: string;
+}
+
 export interface SiteContent {
   serviceCategories: ServiceCategoryContent[];
   addOnCategories: AddOnCategoryContent[];
@@ -100,6 +106,7 @@ export interface SiteContent {
     announcement: BannerContent | null;
     pricingCallout: BannerContent | null;
   };
+  faqs: FaqContent[];
   signupForms: {
     popup: SignupFormContent | null;
     inline: SignupFormContent | null;

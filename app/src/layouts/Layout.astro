@@ -5,6 +5,7 @@ import { THEME_STORAGE_KEY } from '../lib/theme';
 import { getSiteContent } from '../lib/content';
 import AnnouncementBanner from '../components/AnnouncementBanner.astro';
 import SignupPopup from '../components/SignupPopup';
+import ChatWidget from '../components/ChatWidget';
 
 const {
   title = 'SMG Digital Solutions | High-Converting Websites for Florida & USVI',
@@ -130,6 +131,7 @@ const organizationSchema = {
     </a>
     <AnnouncementBanner banner={banners.announcement} />
     <SignupPopup client:idle form={signupForms.popup} />
+    <ChatWidget client:idle />
     <slot />
     <!--
       Pageview + CTA-click tracking for the admin app's Analytics dashboard.
