@@ -4,15 +4,23 @@
  * once, at the top of index.astro's frontmatter, which runs in Node during
  * `astro build` — not in the browser, so there's no relative-URL/same-origin
  * shortcut like the client-side lead-submission helper (leadsApi.ts) uses.
- * Defaults to the production domain; `PUBLIC_ADMIN_ORIGIN` overrides it for
- * local dev, same as leadsApi.ts.
+ *
+ * Defaults to the admin app's OWN Netlify URL, not the public
+ * smgdigitalsolutions.com domain: this site's own `/admin/*` rewrite proxies
+ * to that same admin app, so going through the public domain here would be a
+ * self-referential fetch during this site's own build (broken two ways —
+ * this site isn't deployed yet during its own build, and it depends on the
+ * cross-site rewrite proxy working, which is a separate concern from
+ * whether the admin app itself is up). Fetching the admin app's origin
+ * directly sidesteps both. `PUBLIC_ADMIN_ORIGIN` still overrides for local
+ * dev, same as leadsApi.ts.
  *
  * Throws on failure rather than falling back to empty content — a broken
  * build is far preferable to silently shipping a site with missing
  * Services/Gallery/Add-Ons sections.
  */
 
-const ADMIN_ORIGIN = import.meta.env.PUBLIC_ADMIN_ORIGIN || 'https://smgdigitalsolutions.com';
+const ADMIN_ORIGIN = import.meta.env.PUBLIC_ADMIN_ORIGIN || 'https://smgdigitalsolutionsadmin.netlify.app';
 const CONTENT_ENDPOINT = `${ADMIN_ORIGIN}/admin/api/content`;
 
 export type AddOnUnit = 'MONTHLY' | 'ONE_TIME' | 'QUOTE';
