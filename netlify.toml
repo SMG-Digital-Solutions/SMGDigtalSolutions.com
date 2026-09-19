@@ -11,23 +11,14 @@
   PUBLIC_GA_MEASUREMENT_ID = "G-11S4R4KSDV"
   PUBLIC_META_PIXEL_ID = "2006679344053778"
 
-# Proxies /admin/* to the separate admin app (its own Netlify site + Next.js
-# + Prisma/Neon, kept out of this repo — see smg-admin/README.md). This is a
-# rewrite (status = 200), not a redirect, so the visitor's URL bar always
-# stays on smgdigitalsolutions.com — the split between this static site and
-# the admin app is invisible to them. Must come before the catch-all rule
-# below (Netlify uses the first matching rule).
-[[redirects]]
-  from = "/admin"
-  to = "https://smgdigitalsolutionsadmin.netlify.app/admin"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/admin/*"
-  to = "https://smgdigitalsolutionsadmin.netlify.app/admin/:splat"
-  status = 200
-  force = true
+# /admin/* used to be proxied to the separate admin app via a plain
+# `[[redirects]]` external-URL rewrite here. That rewrite consistently
+# 500'd for every /admin/* path — confirmed (via the admin app's own
+# function logs) that the request never even arrived there, a
+# Netlify-to-Netlify proxying failure specific to the built-in redirect
+# mechanism. It's now handled by netlify/edge-functions/admin-proxy.ts
+# instead, which does the fetch itself — see that file for the full story.
+# Edge functions run before redirects, so no rule is needed here at all.
 
 [[redirects]]
   from = "/*"
