@@ -29,6 +29,8 @@
     "vite-plugin-compression2": "^2.5.3"
   },
   "devDependencies": {
-    "@netlify/edge-functions": "^3.0.8"
+    "@astrojs/check": "^0.9.11",
+    "@netlify/edge-functions": "^3.0.8",
+    "typescript": "^5.9.3"
   }
 }

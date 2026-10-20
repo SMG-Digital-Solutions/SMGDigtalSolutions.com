@@ -1,0 +1,58 @@
+---
+import type { TestimonialContent } from '../lib/content';
+
+interface Props {
+  testimonials: TestimonialContent[];
+}
+
+const { testimonials } = Astro.props;
+---
+
+<section id="testimonials" class="shell py-8" aria-labelledby="testimonials-heading">
+  <div class="rounded-[2rem] border border-black/10 bg-white/80 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-[#1A2B3C]/70">
+    <div class="mb-8 max-w-4xl space-y-4">
+      <p class="text-sm font-semibold uppercase tracking-[0.25em] text-[#008C9E] dark:text-[#4CAF50]">Client voices</p>
+      <h2 id="testimonials-heading" class="text-xl font-black leading-[1.15] tracking-tight text-[#121212] dark:text-[#F7F7F7] md:text-[1.65rem] lg:text-[1.8rem]">What Our Clients Say</h2>
+    </div>
+
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {testimonials.map((testimonial) => (
+        <figure class="flex h-full flex-col justify-between rounded-2xl border border-black/10 bg-white/90 p-5 shadow-sm dark:border-white/10 dark:bg-[#0F1B2C]/80">
+          <div>
+            {testimonial.rating && (
+              <div class="mb-3 flex gap-0.5 text-amber-400" aria-label={`${testimonial.rating} out of 5 stars`}>
+                {Array.from({ length: testimonial.rating }).map(() => (
+                  <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true">
+                    <path d="M10 1.5l2.7 5.8 6.3.6-4.8 4.3 1.4 6.3L10 15.3 4.4 18.5l1.4-6.3L1 7.9l6.3-.6L10 1.5z" />
+                  </svg>
+                ))}
+              </div>
+            )}
+            <blockquote class="text-sm leading-6 text-[#4b5563] dark:text-[#d5dde4]">
+              &ldquo;{testimonial.quoteText}&rdquo;
+            </blockquote>
+          </div>
+          <figcaption class="mt-4 flex items-center gap-3">
+            {testimonial.imageUrl ? (
+              <img
+                src={testimonial.imageUrl}
+                alt={testimonial.imageAlt ?? ''}
+                class="h-10 w-10 shrink-0 rounded-full object-cover"
+              />
+            ) : (
+              <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#008C9E]/10 text-sm font-semibold text-[#008C9E] dark:bg-[#4CAF50]/15 dark:text-[#4CAF50]" aria-hidden="true">
+                {testimonial.authorName.slice(0, 1).toUpperCase()}
+              </span>
+            )}
+            <div>
+              <p class="text-sm font-semibold text-[#121212] dark:text-[#F7F7F7]">{testimonial.authorName}</p>
+              {testimonial.authorTitle && (
+                <p class="text-xs text-[#4b5563] dark:text-[#d5dde4]">{testimonial.authorTitle}</p>
+              )}
+            </div>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>

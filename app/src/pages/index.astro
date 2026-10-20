@@ -11,6 +11,7 @@ import Navigation from '../components/Navigation';
 import Services from '../components/Services.astro';
 import ServiceFocus from '../components/ServiceFocus';
 import ProjectsGallery from '../components/ProjectsGallery.astro';
+import Testimonials from '../components/Testimonials.astro';
 import ScrollRevealImmediate from '../components/ScrollRevealImmediate';
 import InlineSignupForm from '../components/InlineSignupForm';
 import HealthCheckTool from '../components/HealthCheckTool';
@@ -90,6 +91,7 @@ const clientLogos = [
             <div class="hero-stagger-3 flex lg:justify-end justify-start lg:mt-0 mt-8">
               <HeroFloatingCard client:visible />
             </div>
+          </div>
         </div>
       </section>
 
@@ -164,6 +166,8 @@ const clientLogos = [
           </div>
         </section>
       )}
+
+      {content.testimonials.length > 0 && <Testimonials testimonials={content.testimonials} />}
 
       <!-- Pricing and Packages -->
       <Services addOnCategories={content.addOnCategories} pricingCallout={content.banners.pricingCallout} />

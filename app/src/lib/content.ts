@@ -1,6 +1,6 @@
 /**
- * Build-time fetch of CMS content (Services, Add-Ons, Gallery, Banners) from
- * the companion admin app's public `/api/content` endpoint. Called exactly
+ * Build-time fetch of CMS content (Services, Add-Ons, Gallery, Testimonials,
+ * Banners) from the companion admin app's public `/api/content` endpoint. Called exactly
  * once, at the top of index.astro's frontmatter, which runs in Node during
  * `astro build` — not in the browser, so there's no relative-URL/same-origin
  * shortcut like the client-side lead-submission helper (leadsApi.ts) uses.
@@ -67,6 +67,16 @@ export interface GalleryProjectContent {
   liveUrl: string;
 }
 
+export interface TestimonialContent {
+  id: string;
+  authorName: string;
+  authorTitle: string | null;
+  quoteText: string;
+  rating: number | null;
+  imageUrl: string | null;
+  imageAlt: string | null;
+}
+
 export interface BannerContent {
   id: string;
   message: string;
@@ -110,6 +120,7 @@ export interface SiteContent {
   serviceCategories: ServiceCategoryContent[];
   addOnCategories: AddOnCategoryContent[];
   galleryProjects: GalleryProjectContent[];
+  testimonials: TestimonialContent[];
   banners: {
     announcement: BannerContent | null;
     pricingCallout: BannerContent | null;
